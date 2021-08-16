@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/activity_main.xml" value="0.29347826086956524" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/dialog.xml" value="0.35989583333333336" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_edit_user.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_home.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_login.xml" value="0.29347826086956524" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_money.xml" value="0.35989583333333336" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_user.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/layout_product.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/progressbar.xml" value="0.35989583333333336" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/menu/bottom_nav.xml" value="0.35989583333333336" />
       </map>
     </option>
   </component>

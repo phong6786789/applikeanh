@@ -97,7 +97,7 @@ class RegisterFragment : Fragment() {
                                                             "",
                                                             0,
                                                             edtMagt.text.toString(),
-                                                            androidID)
+                                                            androidID,"")
 
                                                         database.child(uid).setValue(user)
                                                             .addOnCompleteListener {

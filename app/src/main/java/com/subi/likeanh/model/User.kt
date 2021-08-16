@@ -9,8 +9,9 @@ data class User(
     var bank:String,
     var stk:Int,
     var sdtGt:String,
-    var idPhone:String
+    var idPhone:String,
+    var userBank: String
 
 ){
-    constructor():this("","","","",true, "",0,"","")
+    constructor():this("","","","",true, "",0,"","","")
 }

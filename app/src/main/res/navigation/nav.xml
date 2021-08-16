@@ -73,6 +73,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_moneyFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/rankFragment"
@@ -81,7 +84,11 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.subi.likeanh.user.UserFragment"
-        android:label="UserFragment" />
+        android:label="UserFragment" >
+        <action
+            android:id="@+id/action_userFragment_to_editUserFragment"
+            app:destination="@id/editUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lichSuFragment"
         android:name="com.subi.likeanh.money.lichsu.LichSuFragment"
@@ -98,4 +105,12 @@
         android:id="@+id/rutFragment"
         android:name="com.subi.likeanh.money.rut.RutFragment"
         android:label="RutFragment" />
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.subi.likeanh.user.EditUserFragment"
+        android:label="EditUserFragment" >
+        <action
+            android:id="@+id/action_editUserFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
 </navigation>

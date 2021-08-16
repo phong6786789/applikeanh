@@ -11,7 +11,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".user.UserFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgA"
@@ -52,6 +53,23 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:text="@{viewModel.user.name}"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Chủ Tài Khoản Ngân hàng" />
+
+            <TextView
+                android:id="@+id/tvUserAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:text="@{viewModel.user.userBank}"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -105,6 +123,19 @@
                 android:text="@{viewModel.user.sdtGt}"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMoveToScreenUpdatesUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/main"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Cập nhật thông tin tài khoản" />
+
         </LinearLayout>
 
 

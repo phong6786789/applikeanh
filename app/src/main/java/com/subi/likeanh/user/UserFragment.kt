@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
 import com.subi.likeanh.BR
@@ -26,7 +27,7 @@ import com.subi.likeanh.model.User
 import kotlin.math.log
 
 
-class UserFragment : Fragment() {
+class UserFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUserBinding
     private val viewModel: UserViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
@@ -40,7 +41,12 @@ class UserFragment : Fragment() {
         binding = FragmentUserBinding.inflate(inflater, container, false)
         init()
         checkForSetDataToUserFragment()
+        setOnClickForViews()
         return binding.root;
+    }
+
+    private fun setOnClickForViews() {
+        binding.tvMoveToScreenUpdatesUser.setOnClickListener(this)
     }
 
     private fun checkForSetDataToUserFragment() {
@@ -69,5 +75,17 @@ class UserFragment : Fragment() {
         binding.setVariable(BR.viewModel, viewModel)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.tvMoveToScreenUpdatesUser -> {
+                startToAnotherScreen()
+            }
+        }
+    }
+
+    private fun startToAnotherScreen() {
+        findNavController().navigate(R.id.editUserFragment)
     }
 }

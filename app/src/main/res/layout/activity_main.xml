@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isNoti"
+            type="Boolean" />
+        <variable
+            name="mess"
+            type="String" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <HorizontalScrollView
+            android:id="@+id/scroll_noti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main"
+            android:scrollbars="none"
+            android:visibility="@{isNoti?View.VISIBLE:View.GONE}">
+
+            <TextView
+                android:id="@+id/tv_noti"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:elevation="10dp"
+                android:gravity="center_vertical"
+                android:outlineAmbientShadowColor="@color/black"
+                android:paddingHorizontal="8dp"
+                android:singleLine="true"
+                android:text="@{mess}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </HorizontalScrollView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:layout_below="@id/scroll_noti"
+            android:id="@+id/fragmentContainerView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_nav"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            app:elevation="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav" />
+    </RelativeLayout>
+</layout>

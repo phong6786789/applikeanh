@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/homeFragment"
+        android:title="Trang chủ"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:iconTint="#707070"
+        android:icon="@drawable/home"/>
+    <item android:id="@+id/moneyFragment"
+        android:title="Tài chính"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:iconTint="#707070"
+        android:icon="@drawable/money"/>
+    <item android:id="@+id/rankFragment"
+        android:title="Xếp hạng"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:iconTint="#707070"
+        android:icon="@drawable/competition"/>
+    <item android:id="@+id/userFragment"
+        android:title="Người dùng"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:iconTint="#707070"
+        android:icon="@drawable/profile"/>
+</menu>

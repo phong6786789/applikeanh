@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.subi.likeanh.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.subi.likeanh.RegisterFragment"
+        android:label="RegisterFragment">
+        <action
+            android:id="@+id/action_registerFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.subi.likeanh.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/moneyFragment"
+        android:name="com.subi.likeanh.money.MoneyFragment"
+        android:label="MoneyFragment">
+        <action
+            android:id="@+id/action_moneyFragment_to_napFragment"
+            app:destination="@id/napFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_moneyFragment_to_lichSuFragment"
+            app:destination="@id/lichSuFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_moneyFragment_to_rutFragment"
+            app:destination="@id/rutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_moneyFragment_to_thuNhapFragment"
+            app:destination="@id/thuNhapFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/rankFragment"
+        android:name="com.subi.likeanh.rank.RankFragment"
+        android:label="RankFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.subi.likeanh.user.UserFragment"
+        android:label="UserFragment" />
+    <fragment
+        android:id="@+id/lichSuFragment"
+        android:name="com.subi.likeanh.money.lichsu.LichSuFragment"
+        android:label="LichSuFragment" />
+    <fragment
+        android:id="@+id/napFragment"
+        android:name="com.subi.likeanh.money.nap.NapFragment"
+        android:label="NapFragment" />
+    <fragment
+        android:id="@+id/thuNhapFragment"
+        android:name="com.subi.likeanh.money.thunhap.ThuNhapFragment"
+        android:label="ThuNhapFragment" />
+    <fragment
+        android:id="@+id/rutFragment"
+        android:name="com.subi.likeanh.money.rut.RutFragment"
+        android:label="RutFragment" />
+</navigation>

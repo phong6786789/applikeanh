@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "224326755090",
+    "firebase_url": "https://diadiembanhangthietyeu-default-rtdb.firebaseio.com",
+    "project_id": "diadiembanhangthietyeu",
+    "storage_bucket": "diadiembanhangthietyeu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224326755090:android:f382298fefc96192bb49cb",
+        "android_client_info": {
+          "package_name": "com.subi.likeanh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224326755090-321t36eco0s6ub516m3h21hr43c3aih6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.subi.likeanh",
+            "certificate_hash": "19981e4df5dbebc080c721043fbf139994eb7435"
+          }
+        },
+        {
+          "client_id": "224326755090-kbddo4svqot3fhe6cgt44ekkdhgqvleo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiesDTPqEiadtLM4gK2a2vvdf0A3zA-bI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224326755090-kbddo4svqot3fhe6cgt44ekkdhgqvleo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

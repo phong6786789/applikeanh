@@ -7,11 +7,10 @@ data class User(
     var token:String,
     var status:Boolean,
     var bank:String,
-    var stk:Int,
+    var stk:String,
     var sdtGt:String,
     var idPhone:String,
-    var userBank: String
 
 ){
-    constructor():this("","","","",true, "",0,"","","")
+    constructor():this("","","","",true, "","","","")
 }

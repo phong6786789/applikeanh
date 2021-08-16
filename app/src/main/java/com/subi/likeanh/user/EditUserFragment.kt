@@ -26,8 +26,6 @@ import com.subi.nails2022.view.ShowDialog
 import com.google.android.gms.tasks.OnFailureListener
 
 
-
-
 class EditUserFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentEditUserBinding
     private val viewModel: UserViewModel by viewModels()
@@ -61,6 +59,12 @@ class EditUserFragment : Fragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
+                    if (user?.stk!!.isNotEmpty() && user.bank.isNotEmpty()) {
+                        binding.edtUserAccount.visibility = View.GONE
+                        binding.edtUserBank.visibility = View.GONE
+                        binding.tvUserAccount.visibility = View.GONE
+                        binding?.tvUserBank.visibility = View.GONE
+                    }
 
                 }
 
@@ -99,11 +103,11 @@ class EditUserFragment : Fragment(), View.OnClickListener {
         ) {
 
             var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
-            userNameHashMap["bank"] = bank
+            userNameHashMap["bank"] = userAccount
             userNameHashMap["name"] = userName
             userNameHashMap["phone"] = userPhone
             userNameHashMap["sdtGt"] = userIntroducePhone
-            userNameHashMap["userBank"] = userAccount
+            userNameHashMap["stk"] = bank
             ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
                 findNavController().navigate(R.id.action_editUserFragment_to_userFragment)
             }

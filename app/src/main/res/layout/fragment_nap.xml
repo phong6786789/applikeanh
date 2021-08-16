@@ -62,7 +62,6 @@
             android:text="Chọn gói nạp" />
 
         <Spinner
-            android:selectedItemPosition="@={viewModel.pos}"
             android:id="@+id/sp_goitk"
             android:layout_width="match_parent"
             android:layout_height="48dp"

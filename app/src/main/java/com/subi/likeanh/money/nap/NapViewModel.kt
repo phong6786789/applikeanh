@@ -8,6 +8,12 @@ import com.subi.likeanh.model.Money
 class NapViewModel : ViewModel() {
     var pos = ObservableField(0)
     var stk = ObservableField("")
+
+
+    val listLoai = arrayListOf(
+        "Gói 1", "Gói 2", "Gói 3", "Gói 4", "Gói 5", "Gói 6", "Gói 7"
+    )
+
     var name = ObservableField("")
         var list = arrayListOf(
         Money("1", "300,000 đồng", "30 like/ngày", "400 đồng/like", "3 ngày","36,000 đồng", "Đã giới thiệu 10 người", "336,000 đồng"),

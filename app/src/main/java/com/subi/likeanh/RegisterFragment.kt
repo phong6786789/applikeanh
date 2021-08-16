@@ -115,12 +115,10 @@ class RegisterFragment : Fragment() {
                                                 }
                                         }
                                     }
-
                                     override fun onCancelled(error: DatabaseError) {
 
                                     }
                                 })
-
                         }
                     }
                 } else {

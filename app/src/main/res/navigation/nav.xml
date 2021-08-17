@@ -123,5 +123,9 @@
     <fragment
         android:id="@+id/napCofirmFragment"
         android:name="com.subi.likeanh.money.nap.NapConfirmFragment"
-        android:label="NapCofirmFragment" />
+        android:label="NapCofirmFragment" >
+        <action
+            android:id="@+id/action_napCofirmFragment_to_moneyFragment"
+            app:destination="@id/moneyFragment" />
+    </fragment>
 </navigation>

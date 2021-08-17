@@ -4,11 +4,12 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.subi.likeanh.model.Money
+import com.subi.likeanh.model.User
 
 class NapViewModel : ViewModel() {
     var pos = ObservableField(0)
     var stk = ObservableField("")
-
+    var user: ObservableField<User> = ObservableField()
 
     val listLoai = arrayListOf(
         "Gói 1", "Gói 2", "Gói 3", "Gói 4", "Gói 5", "Gói 6", "Gói 7"
@@ -32,7 +33,5 @@ class NapViewModel : ViewModel() {
 
     }
 
-    fun nap(){
 
-    }
 }

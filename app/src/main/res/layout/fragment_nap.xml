@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.subi.likeanh.money.nap.NapViewModel" />
@@ -24,6 +25,29 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Số lượt đã giới thiệu"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@{viewModel.user.timesIntroduce}"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -33,9 +57,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_stk"
-                android:text="@{viewModel.stk}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.user.stk}"
                 android:textColor="@color/main" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,10 +71,10 @@
             android:hint="Họ và tên">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:text="@{viewModel.name}"
                 android:id="@+id/edt_hoten"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.user.name}"
                 android:textColor="@color/main" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +93,7 @@
             android:background="@drawable/boder_home" />
 
         <Button
-            android:onClick="@{()->viewModel.nap()}"
+            android:id="@+id/btnNapTien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -98,163 +122,184 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="GÓI: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.goi}"
                         android:id="@+id/tv_tengoi"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.goi}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="GIÁ GÓI: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.goi}"
                         android:id="@+id/tv_gia"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.gia}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SỐ LIKE: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.like}"
                         android:id="@+id/tv_likengay"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.like}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="GIÁ LIKE: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.gia_like}"
                         android:id="@+id/tv_gialike"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.gia_like}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="THỜI HẠN: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.tgian}"
                         android:id="@+id/tv_thoihan"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.tgian}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TỔNG HOA HỒNG: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.hoahong}"
                         android:id="@+id/tv_tonghh"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/main"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.hoahong}"
+                        android:textColor="@color/main" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ĐIỀU KIỆN: "
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.dieukien}"
                         android:id="@+id/tv_dieukien"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/orange"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.dieukien}"
+                        android:textColor="@color/orange" />
                 </LinearLayout>
 
                 <View
-                    android:layout_marginTop="8dp"
-                    android:background="@color/main"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"/>
-                <LinearLayout
+                    android:layout_height="2dp"
                     android:layout_marginTop="8dp"
+                    android:background="@color/main" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TỔNG DOANH THU GÓI:"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:text="@{viewModel.money.tong}"
-                        android:paddingLeft="8dp"
-                        android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="@{viewModel.money.tong}"
+                        android:textColor="@color/red" />
                 </LinearLayout>
             </LinearLayout>
 

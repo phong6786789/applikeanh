@@ -95,20 +95,22 @@ class EditUserFragment : Fragment(), View.OnClickListener {
         val userAccount: String = binding.edtUserAccount.text.toString()
         val bank: String = binding.edtUserBank.text.toString()
         val userPhone = binding.edtUserPhoneNumber.text.toString()
-        val userIntroducePhone = binding.edtIntroducePhoneNumber.text.toString()
 
 
-        if (userName.isNotEmpty() && userAccount.isNotEmpty() && bank.isNotEmpty() && userPhone.isNotEmpty() && userIntroducePhone
-                .isNotEmpty()
+        if (userName.isNotEmpty() && userAccount.isNotEmpty() && bank.isNotEmpty() && userPhone.isNotEmpty()
         ) {
 
             var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
             userNameHashMap["bank"] = userAccount
             userNameHashMap["name"] = userName
             userNameHashMap["phone"] = userPhone
-            userNameHashMap["sdtGt"] = userIntroducePhone
             userNameHashMap["stk"] = bank
             ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+                Toast.makeText(
+                    activity,
+                    "Cập nhật thông tin cá nhân thành công",
+                    Toast.LENGTH_SHORT
+                ).show()
                 findNavController().navigate(R.id.action_editUserFragment_to_userFragment)
             }
 

@@ -16,7 +16,7 @@ import com.subi.likeanh.databinding.FragmentMoneyBinding
 import com.subi.likeanh.home.HomeViewModel
 
 class MoneyFragment : Fragment() {
-    lateinit var binding: FragmentMoneyBinding
+    private lateinit var binding: FragmentMoneyBinding
     private val viewModel: MoneyViewModel by viewModels()
 
     override fun onCreateView(
@@ -50,8 +50,10 @@ class MoneyFragment : Fragment() {
 
         return binding.root;
     }
-    fun init(){
+
+    fun init() {
         binding.setVariable(BR.viewModel, viewModel)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            View.VISIBLE
     }
 }

@@ -96,7 +96,14 @@
     <fragment
         android:id="@+id/napFragment"
         android:name="com.subi.likeanh.money.nap.NapFragment"
-        android:label="NapFragment" />
+        android:label="NapFragment" >
+        <action
+            android:id="@+id/action_napFragment_to_napCofirmFragment"
+            app:destination="@id/napCofirmFragment" />
+        <action
+            android:id="@+id/action_napFragment_to_editUserFragment"
+            app:destination="@id/editUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/thuNhapFragment"
         android:name="com.subi.likeanh.money.thunhap.ThuNhapFragment"
@@ -113,4 +120,8 @@
             android:id="@+id/action_editUserFragment_to_userFragment"
             app:destination="@id/userFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/napCofirmFragment"
+        android:name="com.subi.likeanh.money.nap.NapConfirmFragment"
+        android:label="NapCofirmFragment" />
 </navigation>

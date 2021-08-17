@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Chủ Tài Khoản Ngân hàng" />
+                android:text="Tên ngâng hàng" />
 
             <TextView
                 android:id="@+id/tvUserAccount"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="So dien thoai GT" />
+                android:text="Số điện thoại giới thiệu" />
 
             <TextView
                 android:id="@+id/tvIntroducePhoneNumber"
@@ -131,7 +131,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/main"
+                android:background="@drawable/button"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Cập nhật thông tin tài khoản" />

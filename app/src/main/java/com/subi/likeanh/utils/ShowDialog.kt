@@ -34,10 +34,8 @@ class ShowDialog( //add private constructor if necessary
             private set
 
         var leftButton: String? = null
-            private set
 
         var rightButton: String? = null
-            private set
 
         var leftListener: DialogLeftInterface? = null
             private set

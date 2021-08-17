@@ -22,11 +22,11 @@ import com.subi.nails2022.view.ShowDialog
 import com.subi.likeanh.utils.LoadingDialog
 
 class RegisterFragment : Fragment() {
-    lateinit var binding: FragmentRegBinding
+    private lateinit var binding: FragmentRegBinding
     private var auth = FirebaseAuth.getInstance()
-    lateinit var dialog: ShowDialog.Builder
-    var database = FirebaseDatabase.getInstance().getReference("user")
-    lateinit var loading: LoadingDialog
+    private var database = FirebaseDatabase.getInstance().getReference("user")
+    private lateinit var loading: LoadingDialog
+    private lateinit var dialog: ShowDialog.Builder
 
     @SuppressLint("HardwareIds")
     override fun onCreateView(
@@ -81,15 +81,20 @@ class RegisterFragment : Fragment() {
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         if (snapshot.exists()) {
                                             loading.dismiss()
-                                            dialog.show("Thất bại!",
-                                                "Điện thoại này đã đăng ký một tài khoản trước đó!")
+                                            dialog.show(
+                                                "Thất bại!",
+                                                "Điện thoại này đã đăng ký một tài khoản trước đó!"
+                                            )
                                         } else {
-                                            auth.createUserWithEmailAndPassword("$sdtx@gmail.com",
-                                                pass1)
+                                            auth.createUserWithEmailAndPassword(
+                                                "$sdtx@gmail.com",
+                                                pass1
+                                            )
                                                 .addOnCompleteListener {
                                                     if (it.isSuccessful) {
                                                         val uid = it.result?.user?.uid.toString()
-                                                        val user = User(uid,
+                                                        val user = User(
+                                                            uid,
                                                             sdtx,
                                                             hotenx,
                                                             "",
@@ -97,24 +102,30 @@ class RegisterFragment : Fragment() {
                                                             "",
                                                             "0",
                                                             edtMagt.text.toString(),
-                                                            androidID)
+                                                            androidID,"0"
+                                                        )
 
                                                         database.child(uid).setValue(user)
                                                             .addOnCompleteListener {
-                                                                dialog.show("Chúc mừng!",
-                                                                    "Đăng ký thành công!")
+                                                                dialog.show(
+                                                                    "Chúc mừng!",
+                                                                    "Đăng ký thành công!"
+                                                                )
                                                                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                                                                 loading.dismiss()
                                                             }
 
                                                     } else {
-                                                        dialog.show("Thất bại!",
-                                                            "Tài khoản đã tồn tại!")
+                                                        dialog.show(
+                                                            "Thất bại!",
+                                                            "Tài khoản đã tồn tại!"
+                                                        )
                                                         loading.dismiss()
                                                     }
                                                 }
                                         }
                                     }
+
                                     override fun onCancelled(error: DatabaseError) {
 
                                     }

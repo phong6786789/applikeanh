@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding
 
 
 
-abstract class BaseFragment<T : ViewDataBinding?>(protected var layoutBinding: T? = null) :
+abstract class BaseFragment<T : ViewDataBinding?>(private var layoutBinding: T? = null) :
     Fragment() {
 
     private lateinit var viewRoot: View

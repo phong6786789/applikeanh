@@ -17,9 +17,10 @@ import com.subi.likeanh.databinding.FragmentHomeBinding
 import com.subi.likeanh.model.Product
 
 class HomeFragment : Fragment() {
-    lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
-    var list  = arrayListOf<Product>()
+    private var list = arrayListOf<Product>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -42,8 +43,10 @@ class HomeFragment : Fragment() {
 
         return binding.root;
     }
-    fun init(){
+
+    fun init() {
         binding.setVariable(BR.viewModel, viewModel)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            View.VISIBLE
     }
 }

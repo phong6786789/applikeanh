@@ -32,15 +32,15 @@ class MoneyFragment : Fragment() {
             }
 
             layoutRut.setOnClickListener {
-
+                findNavController().navigate(R.id.action_moneyFragment_to_rutFragment)
             }
 
             layoutThunhap.setOnClickListener {
-
+                findNavController().navigate(R.id.action_moneyFragment_to_thuNhapFragment)
             }
 
             layoutLichsu.setOnClickListener {
-
+                findNavController().navigate(R.id.action_moneyFragment_to_lichSuFragment)
             }
 
             layoutMagt.setOnClickListener {

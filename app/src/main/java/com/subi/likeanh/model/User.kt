@@ -10,8 +10,10 @@ data class User(
     var stk: String,
     var sdtGt: String,
     var idPhone: String,
-    var timesIntroduce: String
+    var timesIntroduce: String,
+    var transferTime: String,
+    var totalMoney: String
 
 ) {
-    constructor() : this("", "", "", "", true, "", "", "", "","")
+    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "")
 }

@@ -76,6 +76,9 @@
         <action
             android:id="@+id/action_moneyFragment_to_userFragment"
             app:destination="@id/userFragment" />
+        <action
+            android:id="@+id/action_moneyFragment_to_rut2Fragment"
+            app:destination="@id/rut2Fragment" />
     </fragment>
     <fragment
         android:id="@+id/rankFragment"
@@ -125,7 +128,11 @@
         android:name="com.subi.likeanh.money.nap.NapConfirmFragment"
         android:label="NapCofirmFragment" >
         <action
-            android:id="@+id/action_napCofirmFragment_to_moneyFragment"
-            app:destination="@id/moneyFragment" />
+            android:id="@+id/action_napCofirmFragment_to_napFragment2"
+            app:destination="@id/napFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/rut2Fragment"
+        android:name="com.subi.likeanh.money.ruta.Rut2Fragment"
+        android:label="Rut2Fragment" />
 </navigation>

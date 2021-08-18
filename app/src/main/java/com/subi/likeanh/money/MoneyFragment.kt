@@ -32,7 +32,7 @@ class MoneyFragment : Fragment() {
             }
 
             layoutRut.setOnClickListener {
-                findNavController().navigate(R.id.action_moneyFragment_to_rutFragment)
+                findNavController().navigate(R.id.action_moneyFragment_to_rut2Fragment)
             }
 
             layoutThunhap.setOnClickListener {

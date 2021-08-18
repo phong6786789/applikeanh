@@ -29,9 +29,9 @@ import com.google.android.gms.tasks.OnFailureListener
 class EditUserFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentEditUserBinding
     private val viewModel: UserViewModel by viewModels()
-    private var user = FirebaseAuth.getInstance().currentUser
     private lateinit var dialog: ShowDialog.Builder
     private lateinit var loading: LoadingDialog
+    private var user = FirebaseAuth.getInstance().currentUser
     private val ref =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
 

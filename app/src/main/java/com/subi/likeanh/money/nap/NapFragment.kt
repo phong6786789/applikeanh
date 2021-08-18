@@ -3,12 +3,14 @@ package com.subi.likeanh.money.nap
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,11 +18,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.subi.likeanh.BR
-import com.subi.likeanh.databinding.FragmentNapBinding
+
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.R
+import com.subi.likeanh.databinding.FragmentNapBinding
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.DialogLeftInterface
@@ -31,8 +34,9 @@ import com.subi.nails2022.view.ShowDialog
 class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private lateinit var binding: FragmentNapBinding
     private val viewModel: NapViewModel by viewModels()
-    private var ref = FirebaseDatabase.getInstance().getReference("money")
     private var user = FirebaseAuth.getInstance().currentUser
+    private val ref =
+        FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private lateinit var loading: LoadingDialog
     private lateinit var dialog: ShowDialog.Builder
 
@@ -89,12 +93,22 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
             })
             .setLeftButton("CÓ", object : DialogLeftInterface {
                 override fun onClick() {
-                    findNavController().navigate(R.id.action_napFragment_to_editUserFragment)
+                    findNavController().navigate(R.id.napCofirmFragment)
                     dialog?.dismiss()
                 }
             })
             .confirm()
         dialog?.show()
+    }
+
+    private fun updateTheUserPackage() {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["userPackage"] = binding.tvTengoi.text.toString()
+        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+            findNavController().navigate(R.id.napCofirmFragment)
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
     }
 
     private fun checkForSpinner() {
@@ -113,7 +127,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         position: Int,
                         id: Long,
                     ) {
-                        print("item: $position")
                         viewModel?.apply {
                             money.set(
                                 when (position) {
@@ -151,16 +164,22 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
+
+                    if (user?.userPackage?.toInt() != 0) {
+                        dialog.show(
+                            "Bạn không đủ điền kiện để nạp vì bạn đã đăng ký 1 gói",
+                            ""
+                        )
+                        return
+                    }
                     if (user?.timesIntroduce?.toInt()!! >= 10) {
-                        findNavController().navigate(R.id.action_napFragment_to_napCofirmFragment)
+                        updateTheUserPackage()
                         return
                     }
                     dialog.show(
                         "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn < =10",
                         ""
                     )
-
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {

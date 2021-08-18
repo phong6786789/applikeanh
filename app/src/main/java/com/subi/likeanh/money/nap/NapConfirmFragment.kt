@@ -84,7 +84,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
                 override fun onClick() {
                     checkForUserInFormation()
                     dialog?.dismiss()
-                    moveToMainActivity()
+
                 }
             })
             .confirm()
@@ -100,19 +100,14 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
             userNameHashMap["transferTime"] = System.currentTimeMillis().toString()
             userNameHashMap["totalMoney"] = userMoney
             ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-                Toast.makeText(
-                    activity,
-                    "Cập nhật thông tin cá nhân thành công",
-                    Toast.LENGTH_SHORT
-                ).show()
-
+                moveToMainActivity()
             }
         }
     }
 
 
     private fun moveToMainActivity() {
-        findNavController().navigate(com.subi.likeanh.R.id.action_napCofirmFragment_to_napFragment2)
+        findNavController().navigate(com.subi.likeanh.R.id.napFragment)
     }
 
     fun init() {

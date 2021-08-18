@@ -12,8 +12,9 @@ data class User(
     var idPhone: String,
     var timesIntroduce: String,
     var transferTime: String,
-    var totalMoney: String
+    var totalMoney: String,
+    var userPackage: String
 
 ) {
-    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "")
 }

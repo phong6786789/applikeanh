@@ -13,8 +13,12 @@ data class User(
     var timesIntroduce: String,
     var transferTime: String,
     var totalMoney: String,
-    var userPackage: String
+    var userPackage: String,
+    var numberLikes: String,
+    var isAvailableToLike: String,
+    val currentDate: String,
+    val totalLike: String
 
 ) {
-    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "", "", "true", "","")
 }

@@ -1,25 +1,42 @@
 package com.subi.likeanh.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.adapter.HomeAdapter
+import com.subi.likeanh.callback.OnItemClick
 import com.subi.likeanh.databinding.FragmentHomeBinding
 import com.subi.likeanh.model.Product
+import com.subi.likeanh.model.User
+import com.subi.likeanh.utils.LoadingDialog
+import com.subi.nails2022.view.ShowDialog
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private var list = arrayListOf<Product>()
+    private var user = FirebaseAuth.getInstance().currentUser
+    private val ref =
+        FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
+    private lateinit var loading: LoadingDialog
+    private lateinit var dialog: ShowDialog.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,23 +48,155 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             rcv.apply {
-                adapter = HomeAdapter(getDataForRecyclerView())
+                adapter = HomeAdapter(getDataForRecyclerView(), this@HomeFragment)
                 layoutManager = GridLayoutManager(requireActivity(), 2)
                 hasFixedSize()
             }
         }
-
+        checkToUpdateTheIsLikeInFirebase()
         return binding.root;
     }
 
+    private fun updateTheUserPackage(valueA: String, valueB: String) {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["numberLikes"] = valueA
+        userNameHashMap["totalLike"] = valueB
+        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
+    }
+
+    private fun updateTheIsLikeInFirebase(value: String) {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["isAvailableToLike"] = value
+        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
+    }
+
+    private fun checkForSetDataToUserFragment() {
+        if (user != null) {
+            val ref =
+                FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(User::class.java)
+                    checkToUpdateTheLike(user!!)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }
+    }
+
+    private fun updateTheCurrentInFirebase(value: String) {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["currentDate"] = value
+        userNameHashMap["isAvailableToLike"] = "true"
+        userNameHashMap["numberLikes"] = "0"
+        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
+    }
+
+    private fun checkToUpdateTheIsLikeInFirebase() {
+        if (user != null) {
+            val ref =
+                FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user?.currentDate != convertTime(System.currentTimeMillis())) {
+                        updateTheCurrentInFirebase(convertTime(System.currentTimeMillis()))
+                        return
+                    }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }
+    }
+
+    private fun convertTime(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("dd")
+        return format.format(date)
+    }
+
+    private fun checkToUpdateTheLike(user: User) {
+        when (user.userPackage.toInt()) {
+            1 -> {
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 30) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    updateTheUserPackage(valueA.toString(), valueB.toString())
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+            }
+            2 -> {
+
+            }
+            3 -> {
+
+            }
+            4 -> {
+
+            }
+            5 -> {
+
+            }
+            6 -> {
+
+            }
+            7 -> {
+
+            }
+        }
+    }
+
     fun init() {
+        loading = LoadingDialog.getInstance(requireContext())
+        dialog = ShowDialog.Builder(requireContext())
         binding.setVariable(BR.viewModel, viewModel)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
     }
 
     private fun getDataForRecyclerView(): List<Product> {
-        var list = arrayListOf<Product>()
+        val list = arrayListOf<Product>()
+        list.add(Product("Laptop dell g5 5500a", R.drawable.ic_laptop_dell_gaming_g5_5500a, false))
+        list.add(Product("Laptop dell vostro 5502", R.drawable.ic_laptop_dell_vostro_5502, false))
+        list.add(Product("Laptop dell vps 9310", R.drawable.ic_laptop_dell_xps_9310, false))
+        list.add(Product("Laptop dell vostro 3400", R.drawable.ic_laptop_dell_vostro_3400, false))
+        list.add(Product("Laptop dell vostro 3400", R.drawable.ic_laptop_dell_vostro_3400, false))
+        list.add(Product("Laptop dell vostros 3405", R.drawable.ic_laptop_dell_vostro_3405, false))
+        list.add(Product("Monitor 24 HP 220 ", R.drawable.ic_monitor_hp_v220, false))
+        list.add(Product("Monitor 27X", R.drawable.ic_monitor_hp_m27x, false))
+        list.add(Product("Monitor HP 27h", R.drawable.ic_monitor_hp_m27h, false))
+        list.add(Product("Monitor HP 24v", R.drawable.ic_monitor_hp_m24v, false))
+        list.add(Product("Monitor HP 27iomen", R.drawable.ic_monitor_hp_27iomen, false))
+        list.add(Product("Monitor HP 24fw", R.drawable.ic_monitor_hp_m24fw, false))
+        list.add(Product("Monitor HP p21v", R.drawable.ic_monitor_hp_p21v, false))
+        list.add(Product("Monitor HP p24", R.drawable.ic_monitor_hp_p204ov, false))
+        list.add(Product("Monitor HP m24f", R.drawable.ic_monitor_hp_m24f, false))
+        list.add(Product("Monitor HP 27xq", R.drawable.ic_monitor_hp_27xq, false))
         list.add(Product("Set A", R.drawable.ic_set_a, false))
         list.add(Product("Set B", R.drawable.ic_set_b, false))
         list.add(Product("Set C", R.drawable.ic_set_c, false))
@@ -61,7 +210,6 @@ class HomeFragment : Fragment() {
         list.add(Product("Chum Nen", R.drawable.ic_chum_nen, false))
         list.add(Product("Chum Nho", R.drawable.ic_chum_nho, false))
         list.add(Product("Qua Nho", R.drawable.ic_qua_nho, false))
-
         list.add(Product("Iphone SE 2020", R.drawable.ic_iphone_se_2020, false))
         list.add(Product("Iphone SE", R.drawable.ic_iphone_se, false))
         list.add(Product("Iphone XR", R.drawable.ic_iphone_xr, false))
@@ -70,7 +218,6 @@ class HomeFragment : Fragment() {
         list.add(Product("Iphone 12", R.drawable.ic_iphone_12, false))
         list.add(Product("Iphone 12 pro max", R.drawable.ic_phone_12_pro_max_d, false))
         list.add(Product("Iphone 12 xanh", R.drawable.ic_phone12_xanh, false))
-
         list.add(Product("Sam sung s21 128", R.drawable.ic_sam_sung_s21_128, false))
         list.add(Product("Sam sung s21 256", R.drawable.ic_sam_sung_s21_a, false))
         list.add(Product("Sam sung zflip 3", R.drawable.ic_sam_sung_zflip_3, false))
@@ -79,7 +226,6 @@ class HomeFragment : Fragment() {
         list.add(Product("Sam sung z fold 3 5g", R.drawable.ic_sam_sung_z_fold_3_5g, false))
         list.add(Product("Sam sung galaxy a52", R.drawable.ic_galaxy_a52, false))
         list.add(Product("Sam sung z fold 3 5g", R.drawable.ic_sam_sung_z_fold_3_5g, false))
-
         list.add(Product("Sam sung a 31", R.drawable.ic_sam_sung_a_31, false))
         list.add(Product("Sam sung a 32", R.drawable.ic_sam_sung_a_32, false))
         list.add(Product("Sam sung galaxy m51", R.drawable.ic_sam_sung_galaxy_m51, false))
@@ -89,7 +235,6 @@ class HomeFragment : Fragment() {
         list.add(Product("Sam sung a 72", R.drawable.ic_sam_sung_galaxy_a72, false))
         list.add(Product("Sam sung galaxy fe", R.drawable.ic_sam_sung_galaxy_fe, false))
         list.add(Product("Sam sung galaxy note 20", R.drawable.ic_sam_sung_galaxy_note20, false))
-
         list.add(Product("Xiaomi redmi 11", R.drawable.ic_xiaomi_mi_11, false))
         list.add(Product("Xiaomi redmi 10", R.drawable.ic_xiao_mi_redmid_note_10, false))
         list.add(Product("Xiaomi redmi 11 128gb", R.drawable.ic_xiao_mi_redmid_note_11, false))
@@ -100,15 +245,25 @@ class HomeFragment : Fragment() {
         list.add(Product("Xiaomi redmi 9 pro", R.drawable.ic_xiao_mi_redmid_note_9_pro, false))
         list.add(Product("Xiaomi redmi 10 128gb", R.drawable.ic_xiao_mi_redmid_note_10_128, false))
         list.add(Product("Xiaomi redmmi note 9s", R.drawable.ic_xiao_mi_redmid_note_9s, false))
-
         list.add(Product("Xiaomi redmmi note 9", R.drawable.ic_xiao_mi_red_mi_note_9, false))
         list.add(Product("Xiaomi redmmi note 8", R.drawable.ic_xiao_mi_red_mi_note_8, false))
         list.add(Product("Xiaomi redmmi note 9T", R.drawable.ic_xiao_mi_red_mi_note_9_t, false))
         list.add(Product("Xiaomi redmmi note 9C", R.drawable.ic_xiao_mi_red_mi_note_9_c, false))
-        list.add(Product("Xiaomi redmmi note 9 64gb", R.drawable.ic_xiao_mi_red_mi_note_9_64, false))
+        list.add(
+            Product(
+                "Xiaomi redmmi note 9 64gb",
+                R.drawable.ic_xiao_mi_red_mi_note_9_64,
+                false
+            )
+        )
         list.add(Product("Xiaomi redmmi note 9A", R.drawable.ic_xiao_mi_red_mi_note_9_a, false))
-        list.add(Product("Xiaomi redmmi note 10 128", R.drawable.ic_xiao_mi_red_mi_note_10_128, false))
-
+        list.add(
+            Product(
+                "Xiaomi redmmi note 10 128",
+                R.drawable.ic_xiao_mi_red_mi_note_10_128,
+                false
+            )
+        )
         list.add(Product("Intel core i3 101000", R.drawable.ic_intel_i3_10_10000, false))
         list.add(Product("Intel core i9 109000", R.drawable.ic_intel_i9_109000, false))
         list.add(Product("Intel core i9 109000x", R.drawable.ic_intel_i9_109000x, false))
@@ -119,7 +274,6 @@ class HomeFragment : Fragment() {
         list.add(Product("Intel core xion 4210", R.drawable.ic_intel_xion_4210, false))
         list.add(Product("Intel core i3 7100", R.drawable.ic_intel_i3_7100, false))
         list.add(Product("Intel core i7 107000k", R.drawable.ic_intel_i7_107000k, false))
-
         list.add(Product("AMD ryzen r5 3400g", R.drawable.ic_r5_3400g, false))
         list.add(Product("AMD ryzen r9 5900x", R.drawable.ic_r9_5900x, false))
         list.add(Product("AMD ryzen r7 57000x", R.drawable.ic_r7_5700x, false))
@@ -130,32 +284,32 @@ class HomeFragment : Fragment() {
         list.add(Product("AMD ryzen r7 2700", R.drawable.ic_r7_2700, false))
         list.add(Product("AMD ryzen r7 5700x", R.drawable.ic_r7_5700x, false))
         list.add(Product("AMD ryzen r3 3200g", R.drawable.ic_r3_3200g, false))
-
-        list.add(Product("Monitor 24 HP 220 ", R.drawable.ic_monitor_hp_v220, false))
-        list.add(Product("Monitor 27X", R.drawable.ic_monitor_hp_m27x, false))
-        list.add(Product("Monitor HP 27h", R.drawable.ic_monitor_hp_m27h, false))
-        list.add(Product("Monitor HP 24v", R.drawable.ic_monitor_hp_m24v, false))
-        list.add(Product("Monitor HP 27iomen", R.drawable.ic_monitor_hp_27iomen, false))
-        list.add(Product("Monitor HP 24fw", R.drawable.ic_monitor_hp_m24fw, false))
-        list.add(Product("Monitor HP p21v", R.drawable.ic_monitor_hp_p21v, false))
-        list.add(Product("Monitor HP p24", R.drawable.ic_monitor_hp_p204ov, false))
-        list.add(Product("Monitor HP m24f", R.drawable.ic_monitor_hp_m24f, false))
-        list.add(Product("Monitor HP 27xq", R.drawable.ic_monitor_hp_27xq, false))
-
-        list.add(Product("Laptop dell inprison n7306 ", R.drawable.ic_laptop_dell_inprision_n7306, false))
+        list.add(
+            Product(
+                "Laptop dell inprison n7306 ",
+                R.drawable.ic_laptop_dell_inprision_n7306,
+                false
+            )
+        )
         list.add(Product("Laptop dell latitue 3402", R.drawable.ic_laptop_dell_latitue_3402, false))
         list.add(Product("Laptop dell vostro 340", R.drawable.ic_laptop_dell_vostro_340, false))
-        list.add(Product("Laptop dell inprision 5301", R.drawable.ic_laptop_dell_inprision_5301, false))
-        list.add(Product("Laptop dell g5 5500a", R.drawable.ic_laptop_dell_gaming_g5_5500a, false))
-        list.add(Product("Laptop dell vostro 5502", R.drawable.ic_laptop_dell_vostro_5502, false))
-        list.add(Product("Laptop dell vps 9310", R.drawable.ic_laptop_dell_xps_9310, false))
-        list.add(Product("Laptop dell vostro 3400", R.drawable.ic_laptop_dell_vostro_3400, false))
-        list.add(Product("Laptop dell vostro 3400", R.drawable.ic_laptop_dell_vostro_3400, false))
-        list.add(Product("Laptop dell vostros 3405", R.drawable.ic_laptop_dell_vostro_3405, false))
-
-
-
-
+        list.add(
+            Product(
+                "Laptop dell inprision 5301",
+                R.drawable.ic_laptop_dell_inprision_5301,
+                false
+            )
+        )
         return list
     }
+
+    override fun onItemLoveClick(value: Product, position: Int) {
+        checkForSetDataToUserFragment()
+    }
+
+    companion object {
+        private const val TAG = "HomeFragment"
+    }
+
+
 }

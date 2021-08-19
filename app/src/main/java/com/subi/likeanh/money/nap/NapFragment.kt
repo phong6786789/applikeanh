@@ -149,7 +149,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         viewModel?.money?.set(viewModel?.list?.get(0))
                     }
-
                 }
             }
 

@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.subi.likeanh.BR
+import com.subi.likeanh.callback.OnItemClick
 import com.subi.likeanh.databinding.LayoutProductBinding
 import com.subi.likeanh.model.Product
 
 
 class HomeAdapter(
-    var items: List<Product>
+    var items: List<Product>, private val onItemClick: OnItemClick
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -22,21 +23,23 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binData(items[position],  position)
+        holder.binData(items[position], position)
     }
 
-    class ViewHolder(var binding: LayoutProductBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(var binding: LayoutProductBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun binData(product: Product, position: Int) {
             binding.apply {
                 setVariable(BR.product, product)
                 executePendingBindings()
 
-                if (!product.isLove){
-                   binding.ivLove.setOnClickListener {
-                       product.isLove = true
-                       setVariable(BR.product, product)
-                       executePendingBindings()
-                   }
+                if (!product.isLove) {
+                    binding.ivLove.setOnClickListener {
+                        onItemClick.onItemLoveClick(product, position)
+                        product.isLove = true
+                        setVariable(BR.product, product)
+                        executePendingBindings()
+                    }
                 }
             }
         }

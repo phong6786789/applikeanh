@@ -20,5 +20,5 @@ data class User(
     val totalLike: String
 
 ) {
-    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "", "", "true", "","")
+    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "", "", "true", "","0")
 }

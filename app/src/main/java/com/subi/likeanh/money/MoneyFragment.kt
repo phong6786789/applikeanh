@@ -53,7 +53,7 @@ class MoneyFragment : Fragment() {
 
     fun init() {
         binding.setVariable(BR.viewModel, viewModel)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
-            View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =  View.VISIBLE
+        viewModel.load()
     }
 }

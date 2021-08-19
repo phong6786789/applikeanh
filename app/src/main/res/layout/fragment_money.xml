@@ -16,19 +16,20 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:shape="rectangle"
-            app:cardCornerRadius="25dp"
-            android:elevation="20dp"
-            android:layout_margin="20dp"
             android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_height="50dp">
+            android:layout_margin="20dp"
+            android:elevation="20dp"
+            android:shape="rectangle"
+            app:cardCornerRadius="25dp">
+
             <ImageView
                 android:id="@+id/iv_contact"
-                android:src="@drawable/telephone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:src="@drawable/telephone" />
 
         </androidx.cardview.widget.CardView>
 
@@ -45,9 +46,9 @@
                     android:id="@+id/cv_edit"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginHorizontal="16dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="16dp">
 
@@ -57,6 +58,7 @@
                         android:background="@drawable/gradien">
 
                         <TextView
+                            setMoney="@{viewModel.user.totalMoney}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_above="@id/info"
@@ -64,7 +66,6 @@
                             android:layout_toLeftOf="@id/logo"
                             android:gravity="center"
                             android:paddingTop="16dp"
-                            android:text="500,000,000 VNĐ"
                             android:textColor="#FFEB3B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -89,7 +90,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="NGUYEN THANH PHONG"
+                                android:text="@{viewModel.user.name}"
                                 android:textAllCaps="true"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
@@ -98,7 +99,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="MB BANK"
+                                android:text="@{viewModel.user.bank}"
                                 android:textAllCaps="true"
                                 android:textColor="@color/orange"
                                 android:textSize="20sp"
@@ -107,7 +108,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="961656789999"
+                                android:text="@{viewModel.user.stk}"
                                 android:textColor="@color/main2"
                                 android:textSize="20sp" />
                         </LinearLayout>
@@ -126,34 +127,37 @@
                     app:cardElevation="8dp">
 
                     <RelativeLayout
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                       <LinearLayout
-                           android:gravity="center"
-                           android:layout_width="match_parent"
-                           android:layout_height="match_parent"
-                           android:orientation="horizontal">
-                           <TextView
-                               android:text="Mã giới thiệu:"
-                               android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
 
-                           <TextView
-                               android:textColor="@color/main"
-                               android:paddingLeft="8dp"
-                               android:id="@+id/tvMa"
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content"/>
-                       </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mã giới thiệu:" />
+
+                            <TextView
+                                android:text="@{viewModel.user.phone}"
+                                android:id="@+id/tvMa"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="8dp"
+                                android:textColor="@color/main" />
+                        </LinearLayout>
 
                         <ImageView
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/copy"
                             android:layout_width="30dp"
-                            android:layout_height="30dp"/>
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/copy" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -174,10 +178,10 @@
                         app:cardElevation="8dp">
 
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/gradien2"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
 
@@ -188,9 +192,9 @@
                                 android:src="@drawable/cash" />
 
                             <TextView
-                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
                                 android:text="Nạp tiền"
                                 android:textColor="@color/white"
@@ -208,10 +212,10 @@
                         app:cardElevation="8dp">
 
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/gradien3"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
 
@@ -222,9 +226,9 @@
                                 android:src="@drawable/rut" />
 
                             <TextView
-                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
                                 android:text="Rút tiền"
                                 android:textColor="@color/white"
@@ -249,10 +253,10 @@
                         app:cardElevation="8dp">
 
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/gradien4"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
 
@@ -263,9 +267,9 @@
                                 android:src="@drawable/salary" />
 
                             <TextView
-                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
                                 android:text="Thu nhập"
                                 android:textColor="@color/white"
@@ -283,10 +287,10 @@
                         app:cardElevation="8dp">
 
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/gradien5"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
 
@@ -297,9 +301,9 @@
                                 android:src="@drawable/clock" />
 
                             <TextView
-                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
                                 android:text="Lịch sử"
                                 android:textColor="@color/white"

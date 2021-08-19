@@ -40,7 +40,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private lateinit var loading: LoadingDialog
     private lateinit var dialog: ShowDialog.Builder
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -66,6 +65,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
+
 
                     if (user?.bank!!.isEmpty() || user.stk.isEmpty()) {
                         showDialogToFillTheTheInformation()
@@ -128,26 +128,45 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         id: Long,
                     ) {
                         viewModel?.apply {
-                            money.set(
+                            var pos = 0
                                 when (position) {
                                     0 -> {
-                                        list[0]
+                                        money.set(list[0])
+                                        pos  = 1
                                     }
-                                    1 -> list[1]
-                                    2 -> list[2]
-                                    3 -> list[3]
-                                    4 -> list[4]
-                                    5 -> list[5]
-                                    6 -> list[6]
-                                    else -> list[0]
+                                    1 -> {
+                                        money.set(list[1])
+                                        pos  = 2
+                                    }
+                                    2 -> {
+                                        money.set(list[2])
+                                        pos  = 3
+                                    }
+                                    3 -> {
+                                        money.set(list[3])
+                                        pos  = 4
+                                    }
+                                    4 -> {
+                                        money.set(list[4])
+                                        pos  = 5
+                                    }
+                                    5 -> {
+                                        money.set(list[5])
+                                        pos  = 6
+                                    }
+                                    else -> {
+                                        money.set(list[6])
+                                        pos  = 7
+                                    }
                                 }
-                            )
+                            tvInfo.setText("Chi tiết gói $pos")
                         }
 
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         viewModel?.money?.set(viewModel?.list?.get(0))
+                        tvInfo.setText("Chi tiết gói 1")
                     }
                 }
             }
@@ -159,7 +178,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
         if (user != null) {
             val ref =
                 FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
-            ref.addValueEventListener(object : ValueEventListener {
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
@@ -176,7 +195,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         return
                     }
                     dialog.show(
-                        "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn < =10",
+                        "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn <=10",
                         ""
                     )
                 }

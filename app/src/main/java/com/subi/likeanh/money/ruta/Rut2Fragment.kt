@@ -17,17 +17,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
-import com.subi.likeanh.databinding.FragmentMoneyBinding
 import com.subi.likeanh.databinding.FragmentRut2Binding
 import com.subi.likeanh.model.User
-import com.subi.likeanh.money.rut.RutViewModel
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
-import java.sql.Time
-import java.util.concurrent.TimeUnit
-import javax.xml.datatype.DatatypeConstants.DAYS
-import kotlin.math.log
-import com.google.firebase.database.DatabaseReference
 
 
 class Rut2Fragment : Fragment(), View.OnClickListener {
@@ -61,16 +54,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
 
     private fun checkForSetDataToUserFragment() {
         if (user != null) {
-            ref.addValueEventListener(object : ValueEventListener {
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
-
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             })
         }
     }
@@ -199,13 +189,12 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                     if (binding.edtMoneyToDeposit.text.toString().isNotEmpty()) {
                         val user = snapshot.getValue(User::class.java)
                         val moneyDeposit = user?.totalMoney.toString()
-                            .toInt() - binding.edtMoneyToDeposit.text.toString()
-                            .toInt()
+                            .toInt() - binding.edtMoneyToDeposit.text.toString().toInt()
 
                         if (moneyDeposit >= 0) {
                             checkTheAvailableTime(
                                 user?.userPackage?.toInt()!!,
-                                user?.transferTime.toLong(),
+                                user.transferTime.toLong(),
                                 moneyDeposit
                             )
                             Log.d(TAG, "onDataChange: $moneyDeposit")

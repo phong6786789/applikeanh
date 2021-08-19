@@ -39,10 +39,7 @@ class HomeAdapter(
                    }
                 }
             }
-
-
         }
-
     }
 
     fun setNewData(newItems: List<Product>) {

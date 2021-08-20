@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentRut2Binding
-import com.subi.likeanh.model.Income
+import com.subi.likeanh.model.History
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
@@ -115,7 +115,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 Log.d(TAG, "onDataChange: $checkTime")
                 if (checkTime <= 3) {
                     updateTheUserPackage(money.toString())
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     checkForSetDataToUserFragment()
                     Log.d("mmm", "checkTheAvailableTime: ")
                     return
@@ -235,7 +235,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = Income(userName, userMoney, convertTime(System.currentTimeMillis()), "Rut")
+        val inCome = History(userName, userMoney, convertTime(System.currentTimeMillis()), "Rut")
         incomeDatabase.child(value).setValue(inCome)
     }
 

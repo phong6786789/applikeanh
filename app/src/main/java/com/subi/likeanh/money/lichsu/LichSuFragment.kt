@@ -18,7 +18,7 @@ import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.adapter.LichSuAdapter
 import com.subi.likeanh.databinding.FragmentLichSuBinding
-import com.subi.likeanh.model.Income
+import com.subi.likeanh.model.History
 
 class LichSuFragment : Fragment() {
     private var lichSuAdapter: LichSuAdapter? = null
@@ -43,7 +43,7 @@ class LichSuFragment : Fragment() {
     }
 
     private fun initRecyclerViews() {
-        val list = arrayListOf<Income>()
+        val list = arrayListOf<History>()
         lichSuAdapter = LichSuAdapter(list)
         binding.apply {
             rcvLichSu.apply {
@@ -63,13 +63,12 @@ class LichSuFragment : Fragment() {
     }
 
     private fun checkForSetDataToUserFragment() {
-
         if (user != null) {
-            incomeDatabase.addValueEventListener(object : ValueEventListener {
+            incomeDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val list = arrayListOf<Income>()
+                    val list = arrayListOf<History>()
                     for (data in snapshot.children) {
-                        val income = data.getValue(Income::class.java)
+                        val income = data.getValue(History::class.java)
                         list.add(income!!)
                     }
                     lichSuAdapter?.setNewData(list)
@@ -78,6 +77,7 @@ class LichSuFragment : Fragment() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+
                 }
 
             })

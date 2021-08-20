@@ -1,14 +1,12 @@
 package com.subi.likeanh.utils
 
 import android.util.Log
-import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.subi.likeanh.R
-import com.subi.likeanh.model.Income
-import org.w3c.dom.Text
+import com.subi.likeanh.model.History
 import java.lang.Exception
 import java.text.DecimalFormat
 
@@ -21,16 +19,16 @@ object BindingUtils {
         }
     }
 
-    @BindingAdapter("setIntToString")
+    @BindingAdapter("convertTextForInCome")
     @JvmStatic
-    fun convertIntToString(textView: TextView, number: Int) {
-        textView.text = number.toString()
+    fun convertIntToString(textView: TextView, value: String) {
+        textView.text = "+ $value"
     }
 
     @BindingAdapter("setImageForIncomeType")
     @JvmStatic
-    fun incomeType(img: ImageView, income: Income) {
-        if (income.userType == "Nap") {
+    fun incomeType(img: ImageView, history: History) {
+        if (history.userType == "Nap") {
             Glide.with(img).load(R.drawable.ic_plus).into(img)
             return
         }
@@ -40,12 +38,12 @@ object BindingUtils {
 
     @BindingAdapter("setTextForIncomeType")
     @JvmStatic
-    fun incomeType(tv: TextView, income: Income) {
-        if (income.userType == "Nap") {
-            tv.text = "+${income.userMoney}"
+    fun incomeType(tv: TextView, history: History) {
+        if (history.userType == "Nap") {
+            tv.text = "+ ${history.userMoney} VND"
             return
         }
-        tv.text = "-${income.userMoney}"
+        tv.text = "- ${history.userMoney} VND"
 
     }
 

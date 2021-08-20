@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.databinding.FragmentNapCofirmBinding
-import com.subi.likeanh.model.Income
+import com.subi.likeanh.model.History
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.DialogLeftInterface
@@ -53,7 +53,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = Income(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap")
+        val inCome = History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap")
         incomeDatabase.child(value).setValue(inCome)
     }
 

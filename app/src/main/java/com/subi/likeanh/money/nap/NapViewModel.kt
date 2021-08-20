@@ -27,8 +27,6 @@ class NapViewModel : ViewModel() {
     )
     var money: ObservableField<Money> = ObservableField()
 
-
-
     fun load(){
 
     }

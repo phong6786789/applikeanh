@@ -1,10 +1,10 @@
 package com.subi.likeanh.model
 
 data class Income(
-    var userName: String,
-    var userMoney: String,
-    var userDate: String,
-    var userType: String
+    val userName: String,
+    val userMoneyUp: String,
+    val userDate: String,
+    val userType: String
 ) {
     constructor() : this(
         "",

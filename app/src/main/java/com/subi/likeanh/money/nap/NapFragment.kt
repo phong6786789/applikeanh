@@ -1,6 +1,5 @@
 package com.subi.likeanh.money.nap
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentNapBinding
-import com.subi.likeanh.model.Income
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.DialogLeftInterface

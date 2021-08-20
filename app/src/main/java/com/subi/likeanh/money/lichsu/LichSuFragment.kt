@@ -84,12 +84,6 @@ class LichSuFragment : Fragment() {
         }
     }
 
-    private fun getDataForRecyclerView(): List<Income> {
-        val list = arrayListOf<Income>()
-        list.add(Income("Laptop dell g5 5500a", "123"))
-        list.add(Income("Laptop dell vostro 5502", "0"))
-        return list
-    }
 
     companion object {
         private const val TAG = "LichSuFragment"

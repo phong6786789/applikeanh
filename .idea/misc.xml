@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/boder.xml" value="0.37604166666666666" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/boder_home.xml" value="0.37604166666666666" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/button.xml" value="0.37604166666666666" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/ic_account.xml" value="0.37604166666666666" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.37604166666666666" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/pass.xml" value="0.37604166666666666" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/plashscreen.xml" value="0.37604166666666666" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/a.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/activity_main.xml" value="0.29347826086956524" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/dialog.xml" value="0.35989583333333336" />

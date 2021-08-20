@@ -23,6 +23,10 @@ import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.DialogLeftInterface
 import com.subi.nails2022.view.DialogRightInterface
 import com.subi.nails2022.view.ShowDialog
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class NapConfirmFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentNapCofirmBinding
@@ -33,7 +37,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     private val userDatabase =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private val incomeDatabase =
-        FirebaseDatabase.getInstance().getReference("income")
+        FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,8 +53,14 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = Income(userName, userMoney)
+        val inCome = Income(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap")
         incomeDatabase.child(value).setValue(inCome)
+    }
+
+    private fun convertTime(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
+        return format.format(date)
     }
 
     private fun updateTheIndexOfTheUser(index: String) {

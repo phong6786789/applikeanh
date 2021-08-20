@@ -22,6 +22,10 @@ import com.subi.likeanh.model.Income
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class Rut2Fragment : Fragment(), View.OnClickListener {
@@ -124,7 +128,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 7) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -136,7 +140,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 20) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -148,7 +152,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 30) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -160,7 +164,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 40) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -172,7 +176,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 50) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -184,7 +188,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 if (checkTime <= 68) {
                     updateTheUserPackage(money.toString())
                     checkForSetDataToUserFragment()
-                    checkForAddToHistory("-$moneyDeposit")
+                    checkForAddToHistory(moneyDeposit)
                     return
                 }
                 return
@@ -231,8 +235,14 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = Income(userName, userMoney)
+        val inCome = Income(userName, userMoney, convertTime(System.currentTimeMillis()), "Rut")
         incomeDatabase.child(value).setValue(inCome)
+    }
+
+    private fun convertTime(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
+        return format.format(date)
     }
 
     private fun updateTheIndexOfTheUser(index: String) {

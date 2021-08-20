@@ -100,7 +100,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-            findNavController().navigate(R.id.napCofirmFragment)
+            findNavController().navigate(R.id.homeFragment)
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }

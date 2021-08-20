@@ -74,6 +74,8 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
     fun init() {
+        loading = LoadingDialog.getInstance(requireContext())
+        dialog = ShowDialog.Builder(requireContext())
         binding.setVariable(BR.viewModel, viewModel)
         checkForSetDataToUserFragment()
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
@@ -101,6 +103,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
             findNavController().navigate(R.id.homeFragment)
+            dialog.show("Admin đang xác nhận", "")
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }

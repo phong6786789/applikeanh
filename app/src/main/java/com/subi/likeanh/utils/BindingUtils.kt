@@ -22,7 +22,7 @@ object BindingUtils {
     @BindingAdapter("convertTextForInCome")
     @JvmStatic
     fun convertIntToString(textView: TextView, value: String) {
-        textView.text = "+ $value"
+        textView.text = "Bạn đã được cộng + $value"
     }
 
     @BindingAdapter("setImageForIncomeType")
@@ -39,11 +39,12 @@ object BindingUtils {
     @BindingAdapter("setTextForIncomeType")
     @JvmStatic
     fun incomeType(tv: TextView, history: History) {
+        val fm = DecimalFormat("#,###")
         if (history.userType == "Nap") {
-            tv.text = "+ ${history.userMoney} VND"
+            tv.text = "Bạn đã nạp + ${fm.format(history?.userMoney.toLong())} VNĐ"
             return
         }
-        tv.text = "- ${history.userMoney} VND"
+        tv.text = "Bạn đã rút - ${fm.format(history?.userMoney.toLong())} VNĐ"
 
     }
 

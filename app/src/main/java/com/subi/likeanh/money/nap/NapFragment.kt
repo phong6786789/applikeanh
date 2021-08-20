@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentNapBinding
+import com.subi.likeanh.model.Income
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.DialogLeftInterface
@@ -39,6 +40,9 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private lateinit var loading: LoadingDialog
     private lateinit var dialog: ShowDialog.Builder
+
+    private val incomeDatabase =
+        FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +60,8 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private fun setOnClickForViews() {
         binding.btnNapTien.setOnClickListener(this)
     }
+
+
 
     private fun checkForSetDataToUserFragment() {
         if (user != null) {
@@ -129,36 +135,36 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                     ) {
                         viewModel?.apply {
                             var pos = 0
-                                when (position) {
-                                    0 -> {
-                                        money.set(list[0])
-                                        pos  = 1
-                                    }
-                                    1 -> {
-                                        money.set(list[1])
-                                        pos  = 2
-                                    }
-                                    2 -> {
-                                        money.set(list[2])
-                                        pos  = 3
-                                    }
-                                    3 -> {
-                                        money.set(list[3])
-                                        pos  = 4
-                                    }
-                                    4 -> {
-                                        money.set(list[4])
-                                        pos  = 5
-                                    }
-                                    5 -> {
-                                        money.set(list[5])
-                                        pos  = 6
-                                    }
-                                    else -> {
-                                        money.set(list[6])
-                                        pos  = 7
-                                    }
+                            when (position) {
+                                0 -> {
+                                    money.set(list[0])
+                                    pos = 1
                                 }
+                                1 -> {
+                                    money.set(list[1])
+                                    pos = 2
+                                }
+                                2 -> {
+                                    money.set(list[2])
+                                    pos = 3
+                                }
+                                3 -> {
+                                    money.set(list[3])
+                                    pos = 4
+                                }
+                                4 -> {
+                                    money.set(list[4])
+                                    pos = 5
+                                }
+                                5 -> {
+                                    money.set(list[5])
+                                    pos = 6
+                                }
+                                else -> {
+                                    money.set(list[6])
+                                    pos = 7
+                                }
+                            }
                             tvInfo.setText("Chi tiết gói $pos")
                         }
 

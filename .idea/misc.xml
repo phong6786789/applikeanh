@@ -11,6 +11,7 @@
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/dialog_show_money.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_edit_user.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_home.xml" value="0.35989583333333336" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_lich_su.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_login.xml" value="0.29347826086956524" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_money.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_nap.xml" value="0.29347826086956524" />
@@ -19,7 +20,10 @@
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_reg.xml" value="0.29347826086956524" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_rut_2.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_rut_a.xml" value="0.35989583333333336" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_thap_nhap.xml" value="0.1" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_thu_nhap.xml" value="0.25" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/fragment_user.xml" value="0.35989583333333336" />
+        <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/item_lich_su_giao_dich.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/layout_product.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/layout/progressbar.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/menu/bottom_nav.xml" value="0.35989583333333336" />

@@ -102,9 +102,17 @@ class RegisterFragment : Fragment() {
                                                             "",
                                                             "0",
                                                             edtMagt.text.toString(),
-                                                            androidID, "0", "0", "0", "0", "0", "true","0","0"
+                                                            androidID,
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "0",
+                                                            "true",
+                                                            "0",
+                                                            "0",
+                                                            "0"
                                                         )
-
                                                         database.child(uid).setValue(user)
                                                             .addOnCompleteListener {
                                                                 dialog.show(

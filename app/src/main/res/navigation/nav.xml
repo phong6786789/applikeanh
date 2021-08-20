@@ -125,7 +125,7 @@
             app:destination="@id/editUserFragment" />
     </fragment>
     <fragment
-        android:id="@+id/thuNhapFragment"
+        android:id=" @+id/thuNhapFragment"
         android:name="com.subi.likeanh.money.thunhap.ThuNhapFragment"
         android:label="ThuNhapFragment" />
     <fragment

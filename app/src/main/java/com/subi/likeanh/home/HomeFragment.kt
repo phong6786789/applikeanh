@@ -22,10 +22,15 @@ import com.subi.likeanh.databinding.FragmentHomeBinding
 import com.subi.likeanh.model.*
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
+import java.io.BufferedInputStream
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.URL
 import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+
 
 class HomeFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentHomeBinding
@@ -48,7 +53,6 @@ class HomeFragment : Fragment(), OnItemClick {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         init()
-
         binding.apply {
             rcv.apply {
                 adapter = HomeAdapter(getDataForRecyclerView(), this@HomeFragment)
@@ -57,7 +61,39 @@ class HomeFragment : Fragment(), OnItemClick {
             }
         }
         checkToUpdateTheIsLikeInFirebase()
+//        val thread = MyThread()
+//        thread.start()
         return binding.root;
+    }
+
+    private fun pushNotificationInToTelegram() {
+
+
+    }
+
+    class MyThread : Thread() {
+        override fun run() {
+            var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s"
+
+            val apiToken = "1956385735:AAH3P1hCzcqAouLa2Io490bfveZykjzKgMM"
+            val chatId = "550588602"
+            val text = " Hello world!"
+
+            urlString = String.format(urlString, apiToken, chatId, text)
+            val url = URL(urlString)
+            val conn = url.openConnection()
+
+            val inputStream = BufferedInputStream(conn.getInputStream())
+            val br = BufferedReader(InputStreamReader(inputStream))
+            val response = br.readText()
+            try {
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+
+        }
     }
 
 

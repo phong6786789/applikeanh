@@ -22,6 +22,11 @@ import com.subi.likeanh.model.History
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
+import org.telegram.passport.TelegramPassport
+import java.io.BufferedInputStream
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.URL
 import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,6 +43,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private val incomeDatabase =
         FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
+    private val TG_PASSPORT_RESULT = 352
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,7 +109,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
             findNavController().navigate(R.id.homeFragment)
-            dialog.show("Admin đang xác nhận", "")
+            dialog.show("Admin đang xác nhận số tiền cần rút", "")
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }
@@ -199,6 +205,8 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         }
 
     }
+
+
 
     private fun checkForDeposit() {
         if (user != null) {

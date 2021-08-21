@@ -1,5 +1,6 @@
 package com.subi.likeanh.utils
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,15 +37,18 @@ object BindingUtils {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @BindingAdapter("setTextForIncomeType")
     @JvmStatic
     fun incomeType(tv: TextView, history: History) {
         val fm = DecimalFormat("#,###")
         if (history.userType == "Nap") {
             tv.text = "Bạn đã nạp + ${fm.format(history?.userMoney.toLong())} VNĐ"
+            tv.setTextColor(R.color.nap)
             return
         }
         tv.text = "Bạn đã rút - ${fm.format(history?.userMoney.toLong())} VNĐ"
+        tv.setTextColor(R.color.rut)
 
     }
 

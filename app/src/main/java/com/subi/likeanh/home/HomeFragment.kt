@@ -209,22 +209,100 @@ class HomeFragment : Fragment(), OnItemClick {
                 dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             2 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 30) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 19200
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[1].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             3 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 30) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 25000
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[2].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             4 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 35) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 495000
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[3].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             5 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 35) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 75000
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[4].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             6 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 40) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 162500
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[5].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
             7 -> {
-
+                if (user.isAvailableToLike == "true") {
+                    if (user.numberLikes.toInt() >= 40) {
+                        dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
+                        updateTheIsLikeInFirebase("false")
+                        return
+                    }
+                    val valueA = user.numberLikes.toInt() + 1
+                    val valueB = user.totalLike.toInt() + 1
+                    val valueC = user.totalMoney.toLong() + 205882
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[6].gia_like)
+                    return
+                }
+                dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
             }
         }
     }

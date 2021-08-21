@@ -90,8 +90,6 @@ class RankFragment : Fragment() {
                     when (list.size) {
                         1 -> {
                             binding.tvTop1.text = list[0].name
-                            binding.tvTop2.text = list[1].name
-                            binding.tvTop3.text = list[2].name
                         }
                         2 -> {
                             binding.tvTop1.text = list[0].name

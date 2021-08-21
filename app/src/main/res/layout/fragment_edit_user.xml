@@ -32,6 +32,7 @@
 
 
                 <LinearLayout
+                    android:layout_margin="16dp"
                     android:id="@+id/llA"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -50,15 +51,14 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:text="Họ Và Tên" />
 
                     <EditText
+                        android:inputType="text"
                         android:id="@+id/edtUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="@{viewModel.user.name}"
                         android:textColor="@color/black"
@@ -68,15 +68,14 @@
                         android:id="@+id/tvUserAccount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Tên Ngân Hàng" />
 
                     <EditText
+                        android:inputType="text"
                         android:id="@+id/edtUserAccount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="@{viewModel.user.bank}"
                         android:textColor="@color/black"
@@ -86,15 +85,14 @@
                         android:id="@+id/tvUserBank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Số Tài Khoản Ngân Hàng" />
 
                     <EditText
+                        android:inputType="number"
                         android:id="@+id/edtUserBank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="@{viewModel.user.stk}"
                         android:textColor="@color/black"
@@ -103,26 +101,26 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Số Điện Thoại" />
 
                     <EditText
+                        android:inputType="phone"
                         android:id="@+id/edtUserPhoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="@{viewModel.user.phone}"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
 
-                    <TextView
+                    <Button
+                        android:elevation="10dp"
+                        android:textColor="@color/white"
                         android:id="@+id/tvUpdateAccount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
                         android:background="@drawable/button"

@@ -7,9 +7,22 @@
         <variable
             name="viewModel"
             type="com.subi.likeanh.money.nap.NapViewModel" />
+
+        <variable
+            name="money"
+            type="String" />
+
+        <variable
+            name="body"
+            type="String" />
+        <variable
+            name="packagex"
+            type="String" />
+
     </data>
 
     <LinearLayout
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -20,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Thông tin người nhận"
+            android:text="Vui lòng chuyển khoản theo yêu cầu sau"
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold" />
@@ -34,17 +47,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Họ Và Tên"
+                android:text="Họ Và Tên: "
                 android:textColor="@color/black" />
 
             <TextView
+                android:text="@{viewModel.user.name}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Admin"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -57,17 +69,60 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Tên ngân hàng"
+                android:text="Tên ngân hàng: "
                 android:textColor="@color/black" />
 
             <TextView
+                android:text="@{viewModel.user.bank}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Vietcombank"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln_stk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Số tài khoản: "
+                android:textColor="@color/black" />
+
+            <TextView
+                android:text="@{viewModel.user.stk}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Số tiền: "
+                android:textColor="@color/black" />
+
+            <TextView
+                android:text="@{money}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -80,77 +135,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Số tài khoản ngân hàng"
+                android:text="Nội dung cần ghi: "
                 android:textColor="@color/black" />
 
             <TextView
+                android:text="@{body}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="123456798"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Gói bạn đang thanh toán"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@{viewModel.user.userPackage}"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:hint="Nhập số tiền đã chuyển">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtTotalMoney"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/main" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:hint="Nội dung chuyển tiền Sđt + Gói">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtContentTransfer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/main" />
-        </com.google.android.material.textfield.TextInputLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,35 +156,77 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
                     android:id="@+id/btnConfirmNapTien"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Đã chuyển khoản" />
+                    android:text="Đã chuyển" />
 
-                <TextView
+                <Button
                     android:id="@+id/btnCancelNapTien"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="Hủy Bỏ" />
             </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Gói bạn đang thanh toán: "
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{packagex}"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Lưu ý:"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/note"
+                android:textColor="@color/red"
+                android:textStyle="italic" />
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -4,13 +4,9 @@ import android.util.Log
 import com.ajts.androidmads.telegrambotlibrary.Telegram
 import com.ajts.androidmads.telegrambotlibrary.Utils.TelegramCallback
 import com.ajts.androidmads.telegrambotlibrary.models.Message
-import okhttp3.Call
-import android.widget.Toast
-
-import com.subi.likeanh.MainActivity
-import com.ajts.androidmads.telegrambotlibrary.models.GetMe
 import kotlinx.coroutines.*
-import java.lang.Exception
+import okhttp3.Call
+import java.sql.Ref
 
 
 object SendTelegram {
@@ -32,6 +28,7 @@ object SendTelegram {
         }
 
         waitFor.await()
+        Log.d("CoroutineScope", "CoroutineScope: $result")
         return result
     }
 }

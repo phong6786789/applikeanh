@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
+import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentNapCofirmBinding
 import com.subi.likeanh.model.History
 import com.subi.likeanh.model.User
@@ -32,12 +33,14 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentNapCofirmBinding
     private val viewModel: NapViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
-    private lateinit var dialog: ShowDialog.Builder
-    private lateinit var loading: LoadingDialog
+    private lateinit var dialogA: ShowDialog.Builder
+    private lateinit var loadingA: LoadingDialog
     private val userDatabase =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private val incomeDatabase =
         FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
+    private val rutNapDatabase =
+        FirebaseDatabase.getInstance().getReference("rutnap").child(user!!.uid + "nap")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +56,10 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap")
+        val inCome =
+            History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap", "False")
         incomeDatabase.child(value).setValue(inCome)
+        rutNapDatabase.setValue(inCome)
     }
 
     private fun convertTime(time: Long): String {
@@ -130,6 +135,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
             .setLeftButton("Xác nhận", object : DialogLeftInterface {
                 override fun onClick() {
                     checkForUserInFormation()
+                    dialogA.show("Giao dịch thành công", "Vui lòng chờ admin xác nhận")
                     dialog?.dismiss()
 
                 }
@@ -149,7 +155,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
         ) {
             var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
             userNameHashMap["transferTime"] = System.currentTimeMillis().toString()
-            userNameHashMap["totalMoney"] = userMoney
+            userNameHashMap["totalMoney"] = "0"
             userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
                 moveToMainActivity()
             }
@@ -158,13 +164,13 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
 
 
     private fun moveToMainActivity() {
-        findNavController().navigate(com.subi.likeanh.R.id.napFragment)
+        findNavController().navigate(R.id.homeFragment)
     }
 
     fun init() {
         binding.setVariable(BR.viewModel, viewModel)
-        loading = LoadingDialog.getInstance(requireContext())
-        dialog = ShowDialog.Builder(requireContext())
+        loadingA = LoadingDialog.getInstance(requireContext())
+        dialogA = ShowDialog.Builder(requireContext())
         requireActivity().findViewById<BottomNavigationView>(com.subi.likeanh.R.id.bottom_nav).visibility =
             View.VISIBLE
         viewModel.load()

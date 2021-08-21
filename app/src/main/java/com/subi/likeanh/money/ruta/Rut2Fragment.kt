@@ -19,6 +19,7 @@ import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentRut2Binding
 import com.subi.likeanh.model.History
+import com.subi.likeanh.model.Income
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
@@ -38,6 +39,8 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private val incomeDatabase =
         FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
+    private val napRutDatabase =
+        FirebaseDatabase.getInstance().getReference("rutnap")
     private val TG_PASSPORT_RESULT = 352
 
     override fun onCreateView(
@@ -86,25 +89,24 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnConfirmDeposit -> {
-                Toast.makeText(activity, "kienda", Toast.LENGTH_SHORT).show()
                 checkForDeposit()
             }
             R.id.btnCancelDeposit -> {
-                moveToMoneyFragment()
+                moveToHomeFragment()
             }
         }
     }
 
-    private fun moveToMoneyFragment() {
-
+    private fun moveToHomeFragment() {
+        findNavController().navigate(R.id.homeFragment)
     }
 
     private fun updateTheUserPackage(totalMoney: String) {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-            findNavController().navigate(R.id.homeFragment)
-            dialog.show("Admin đang xác nhận số tiền cần rút", "")
+
+
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }
@@ -118,9 +120,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 Log.d(TAG, "onDataChange: $checkTime")
                 if (checkTime <= 3) {
-                    updateTheUserPackage(money.toString())
                     checkForAddToHistory(moneyDeposit)
-                    checkForSetDataToUserFragment()
                     Log.d("mmm", "checkTheAvailableTime: ")
                     return
                 }
@@ -130,10 +130,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 7) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
-                    Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
                 return
@@ -142,10 +139,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 20) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
-                    Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
                 return
@@ -154,10 +148,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 30) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
-                    Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
                 return
@@ -166,10 +157,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 40) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
-                    Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
                 return
@@ -178,10 +166,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 50) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
-                    Toast.makeText(context, "Bạn đủ đk thanh toán", Toast.LENGTH_SHORT).show()
                     return
                 }
                 return
@@ -190,8 +175,6 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
                 if (checkTime <= 68) {
-                    updateTheUserPackage(money.toString())
-                    checkForSetDataToUserFragment()
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -200,7 +183,6 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         }
 
     }
-
 
 
     private fun checkForDeposit() {
@@ -240,9 +222,46 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome = History(userName, userMoney, convertTime(System.currentTimeMillis()), "Rut")
-        incomeDatabase.child(value).setValue(inCome)
+    private fun addToInComeDatabase(
+        value: String,
+        userName: String,
+        userMoney: String,
+        currentIndex: String
+    ) {
+        napRutDatabase.child(user!!.uid + "rut")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val rut = snapshot.getValue(Income::class.java)
+                    if (rut == null) {
+                        val inCome = History(
+                            userName,
+                            userMoney,
+                            convertTime(System.currentTimeMillis()),
+                            "Rut", "False"
+                        )
+                        incomeDatabase.child(value).setValue(inCome)
+                        napRutDatabase.child(user!!.uid + "rut").setValue(inCome)
+                        updateTheIndexOfTheUser(currentIndex)
+                        dialog.show(
+                            "Giao dịch thành công",
+                            "Giao dịch thành công admin đang thực hiện yêu cầu của bạn, vui lòng chờ đợi"
+                        )
+                        moveToHomeFragment()
+                        return
+                    }
+                    dialog.show(
+                        "Giao dịch thất bại",
+                        "Giao dịch cũ của bạn đang được admin xử lý, vui lòng chờ đợi"
+                    )
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+
     }
 
     private fun convertTime(time: Long): String {
@@ -256,7 +275,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         userNameHashMap["index"] = index
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
         }.addOnFailureListener {
-            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+
         }
     }
 
@@ -267,8 +286,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     val currentIndex = user?.index!!.toInt() + 1
-                    addToInComeDatabase(user.index, user.name, userMoney)
-                    updateTheIndexOfTheUser(currentIndex.toString())
+                    addToInComeDatabase(user.index, user.name, userMoney, currentIndex.toString())
                 }
 
                 override fun onCancelled(error: DatabaseError) {

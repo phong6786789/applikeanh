@@ -69,7 +69,9 @@ class LichSuFragment : Fragment() {
                     val list = arrayListOf<History>()
                     for (data in snapshot.children) {
                         val income = data.getValue(History::class.java)
-                        list.add(income!!)
+                        if (income?.userStatus == "true") {
+                            list.add(income)
+                        }
                     }
                     lichSuAdapter?.setNewData(list)
                     Log.d(TAG, "onDataChange: ${list.size}")

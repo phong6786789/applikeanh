@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.databinding.ActivityMainBinding
+import com.subi.likeanh.utils.SendTelegram
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initBottom()
+
+        SendTelegram.send("hello")
 
         //run text, chạy 3 lần xong tự động tắt
         ref.addValueEventListener(object : ValueEventListener {

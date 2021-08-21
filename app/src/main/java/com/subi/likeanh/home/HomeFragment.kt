@@ -65,38 +65,6 @@ class HomeFragment : Fragment(), OnItemClick {
 //        thread.start()
         return binding.root;
     }
-
-    private fun pushNotificationInToTelegram() {
-
-
-    }
-
-    class MyThread : Thread() {
-        override fun run() {
-            var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s"
-
-            val apiToken = "1956385735:AAH3P1hCzcqAouLa2Io490bfveZykjzKgMM"
-            val chatId = "550588602"
-            val text = " Hello world!"
-
-            urlString = String.format(urlString, apiToken, chatId, text)
-            val url = URL(urlString)
-            val conn = url.openConnection()
-
-            val inputStream = BufferedInputStream(conn.getInputStream())
-            val br = BufferedReader(InputStreamReader(inputStream))
-            val response = br.readText()
-            try {
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-
-        }
-    }
-
-
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
         val income =
             Income(userName, userMoney, convertTimeForInCome(System.currentTimeMillis()), "0")

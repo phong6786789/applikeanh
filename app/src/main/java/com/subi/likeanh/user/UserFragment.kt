@@ -57,7 +57,6 @@ class UserFragment : Fragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {

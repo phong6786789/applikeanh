@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initBottom()
 
-        SendTelegram.send("hello")
+
 
         //run text, chạy 3 lần xong tự động tắt
         ref.addValueEventListener(object : ValueEventListener {

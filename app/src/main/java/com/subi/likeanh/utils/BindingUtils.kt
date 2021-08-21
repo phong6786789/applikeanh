@@ -26,6 +26,21 @@ object BindingUtils {
         textView.text = "Bạn đã được cộng + $value"
     }
 
+
+    @BindingAdapter("setTextForUserName")
+    @JvmStatic
+    fun convertIntToStringA(textView: TextView, value: String) {
+        textView.text = "Tên tài khoản $value"
+    }
+
+
+    @BindingAdapter("setTextForUserMoney")
+    @JvmStatic
+    fun convertIntToStringA1(textView: TextView, value: String) {
+        val fm = DecimalFormat("#,###")
+        textView.text = "Bạn đã nạp ${fm.format(value.toLong())} VNĐ"
+    }
+
     @BindingAdapter("setImageForIncomeType")
     @JvmStatic
     fun incomeType(img: ImageView, history: History) {

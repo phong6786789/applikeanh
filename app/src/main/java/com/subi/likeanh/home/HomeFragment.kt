@@ -19,8 +19,7 @@ import com.subi.likeanh.R
 import com.subi.likeanh.adapter.HomeAdapter
 import com.subi.likeanh.callback.OnItemClick
 import com.subi.likeanh.databinding.FragmentHomeBinding
-import com.subi.likeanh.model.Product
-import com.subi.likeanh.model.User
+import com.subi.likeanh.model.*
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
 import java.text.Format
@@ -33,8 +32,12 @@ class HomeFragment : Fragment(), OnItemClick {
     private val viewModel: HomeViewModel by viewModels()
     private var list = arrayListOf<Product>()
     private var user = FirebaseAuth.getInstance().currentUser
-    private val ref =
+    private val userDatabase =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
+
+    private val likeDatabaseError =
+        FirebaseDatabase.getInstance().getReference("lịke").child(user!!.uid)
+
     private lateinit var loading: LoadingDialog
     private lateinit var dialog: ShowDialog.Builder
 
@@ -57,11 +60,27 @@ class HomeFragment : Fragment(), OnItemClick {
         return binding.root;
     }
 
-    private fun updateTheUserPackage(valueA: String, valueB: String) {
+
+    private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
+        val income =
+            Income(userName, userMoney, convertTimeForInCome(System.currentTimeMillis()), "0")
+        likeDatabaseError.child(value).setValue(income)
+    }
+
+    private fun convertTimeForInCome(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
+        return format.format(date)
+    }
+
+
+    private fun updateTheUserPackage(valueA: String, valueB: String, valueC: String) {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["numberLikes"] = valueA
         userNameHashMap["totalLike"] = valueB
-        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+        userNameHashMap["totalLike"] = valueB
+        userNameHashMap["totalMoney"] = valueC
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
 
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
@@ -71,7 +90,7 @@ class HomeFragment : Fragment(), OnItemClick {
     private fun updateTheIsLikeInFirebase(value: String) {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["isAvailableToLike"] = value
-        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
 
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
@@ -100,7 +119,7 @@ class HomeFragment : Fragment(), OnItemClick {
         userNameHashMap["currentDate"] = value
         userNameHashMap["isAvailableToLike"] = "true"
         userNameHashMap["numberLikes"] = "0"
-        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
 
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
@@ -134,6 +153,7 @@ class HomeFragment : Fragment(), OnItemClick {
         return format.format(date)
     }
 
+
     private fun checkToUpdateTheLike(user: User) {
         when (user.userPackage.toInt()) {
             1 -> {
@@ -145,7 +165,9 @@ class HomeFragment : Fragment(), OnItemClick {
                     }
                     val valueA = user.numberLikes.toInt() + 1
                     val valueB = user.totalLike.toInt() + 1
-                    updateTheUserPackage(valueA.toString(), valueB.toString())
+                    val valueC = user.totalMoney.toLong() + 400
+                    updateTheUserPackage(valueA.toString(), valueB.toString(), valueC.toString())
+                    addToInComeDatabase(valueB.toString(), user.name, getListMoney()[0].gia_like)
                     return
                 }
                 dialog.show("Bạn đã dùng hết số lượt like ngày hôm nay", "")
@@ -306,6 +328,96 @@ class HomeFragment : Fragment(), OnItemClick {
     override fun onItemLoveClick(value: Product, position: Int) {
         checkForSetDataToUserFragment()
     }
+
+    private fun getListMoney(): List<Money> {
+        val list = arrayListOf<Money>()
+        list.add(
+            Money(
+                "1",
+                "300,000 đồng",
+                "30 like/ngày",
+                "400 đồng/like",
+                "3 ngày",
+                "36,000 đồng",
+                "Đã giới thiệu 10 người",
+                "336,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "2",
+                "3,000,000 đồng",
+                "30 like/ngày",
+                "19,280 đồng/like",
+                "7 ngày",
+                "945,000 đồng",
+                "Đã giới thiệu 20 người",
+                "3,945,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "3",
+                "10,000,000 đồng",
+                "30 like/ngày",
+                "25,000 đồng/like",
+                "20 ngày",
+                "10,000,000 đồng",
+                "Đã giới thiệu 30 người",
+                "20,000,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "4",
+                "30,000,000 đồng",
+                "35 like/ngày",
+                "55,000 đồng/like",
+                "30 ngày",
+                "49,500,000 đồng",
+                "Đã giới thiệu 40 người",
+                "79,500,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "5",
+                "50,000,000 đồng",
+                "35 like/ngày",
+                "75,000 đồng/like",
+                "40 ngày",
+                "120,000,000 đồng",
+                "Đã giới thiệu 50 người",
+                "170,000,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "6",
+                "100,000,000 đồng",
+                "40 like/ngày",
+                "162,500 đồng/like",
+                "50 ngày",
+                "325,000,000 đồng",
+                "Đã giới thiệu 60 người",
+                "425,000,000 đồng"
+            )
+        )
+        list.add(
+            Money(
+                "7",
+                "200,000,000 đồng",
+                "40 like/ngày",
+                "205,882 đồng/like",
+                "68 ngày",
+                "952,000,000 đồng",
+                "",
+                "1,152,000,000 đồng"
+            )
+        )
+        return list
+    }
+
 
     companion object {
         private const val TAG = "HomeFragment"

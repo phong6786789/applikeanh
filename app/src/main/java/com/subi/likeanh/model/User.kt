@@ -17,8 +17,28 @@ data class User(
     var numberLikes: String,
     var isAvailableToLike: String,
     val currentDate: String,
-    val totalLike: String
+    val totalLike: String,
+    val index: String
 
 ) {
-    constructor() : this("", "", "", "", true, "", "", "", "", "", "", "", "", "", "true", "","0")
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        true,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "true",
+        "",
+        "",
+        "0"
+    )
 }

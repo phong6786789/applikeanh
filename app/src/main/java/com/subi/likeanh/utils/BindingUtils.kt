@@ -1,12 +1,12 @@
 package com.subi.likeanh.utils
 
 import android.util.Log
-import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.subi.likeanh.R
-import org.w3c.dom.Text
+import com.subi.likeanh.model.History
 import java.lang.Exception
 import java.text.DecimalFormat
 
@@ -19,10 +19,33 @@ object BindingUtils {
         }
     }
 
-    @BindingAdapter("setIntToString")
+    @BindingAdapter("convertTextForInCome")
     @JvmStatic
-    fun convertIntToString(textView: TextView, number: Int) {
-        textView.text = number.toString()
+    fun convertIntToString(textView: TextView, value: String) {
+        textView.text = "Bạn đã được cộng + $value"
+    }
+
+    @BindingAdapter("setImageForIncomeType")
+    @JvmStatic
+    fun incomeType(img: ImageView, history: History) {
+        if (history.userType == "Nap") {
+            Glide.with(img).load(R.drawable.ic_plus).into(img)
+            return
+        }
+        Glide.with(img).load(R.drawable.ic_minus).into(img)
+    }
+
+
+    @BindingAdapter("setTextForIncomeType")
+    @JvmStatic
+    fun incomeType(tv: TextView, history: History) {
+        val fm = DecimalFormat("#,###")
+        if (history.userType == "Nap") {
+            tv.text = "Bạn đã nạp + ${fm.format(history?.userMoney.toLong())} VNĐ"
+            return
+        }
+        tv.text = "Bạn đã rút - ${fm.format(history?.userMoney.toLong())} VNĐ"
+
     }
 
 
@@ -41,15 +64,13 @@ object BindingUtils {
     fun setMoney(textView: TextView, money: String?) {
         Log.d("test", money.toString())
         try {
-            if(money=="0"||money=="null"){
+            if (money == "0" || money == "null") {
                 textView.text = "0 VNĐ"
-            }
-            else{
+            } else {
                 val fm = DecimalFormat("#,###")
                 textView.text = "${fm.format(money?.toLong())} VNĐ"
             }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
 
         }
     }

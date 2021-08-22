@@ -93,4 +93,31 @@ object BindingUtils {
 
         }
     }
+
+
+    @BindingAdapter("setGoi")
+    @JvmStatic
+    fun setGoi(textView: TextView, goi: String?) {
+        try {
+            if (goi == "0" || goi == "null") {
+                textView.text = "Gói 0"
+            } else {
+                textView.text = "Gói $goi"
+            }
+        } catch (e: Exception) {
+        }
+    }
+
+    @BindingAdapter("setGT")
+    @JvmStatic
+    fun setGT(textView: TextView, gt: String?) {
+        try {
+            if (gt == "0" || gt == "null") {
+                textView.text = "Đã giới thiệu: 0"
+            } else {
+                textView.text = "Đã giới thiệu: $gt"
+            }
+        } catch (e: Exception) {
+        }
+    }
 }

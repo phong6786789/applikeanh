@@ -26,7 +26,6 @@ object SendTelegram {
                 })
             return@async result
         }
-
         waitFor.await()
         Log.d("CoroutineScope", "CoroutineScope: $result")
         return result

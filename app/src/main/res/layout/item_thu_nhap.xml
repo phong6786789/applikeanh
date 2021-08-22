@@ -35,8 +35,8 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="10dp"
-                        android:padding="20dp"
-                        android:src="@drawable/ic_plus" />
+                        android:padding="12dp"
+                        android:src="@drawable/salary" />
 
                 </LinearLayout>
 

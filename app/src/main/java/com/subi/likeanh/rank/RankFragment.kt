@@ -109,7 +109,6 @@ class RankFragment : Fragment() {
                         rankAdapter?.setNewData(list)
                         return
                     }
-                    rankAdapter?.setNewData(list)
                     Log.d(TAG, "onDataChange: ${list.size}")
 
                 }

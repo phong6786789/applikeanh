@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,6 +34,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private lateinit var binding: FragmentNapBinding
     private val viewModel: NapViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
+    var pos = 0
     private val ref =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private lateinit var loading: LoadingDialog
@@ -59,7 +61,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     }
 
 
-
     private fun checkForSetDataToUserFragment() {
         if (user != null) {
             val ref =
@@ -68,8 +69,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
-
-
                     if (user?.bank!!.isEmpty() || user.stk.isEmpty()) {
                         showDialogToFillTheTheInformation()
                     }
@@ -87,8 +86,8 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private fun showDialogToFillTheTheInformation() {
         var dialog: Dialog? = null
         dialog = ShowDialog.Builder(requireContext())
-            .title("Bạn chưa điền đầy đủ thông tin cá nhân")
-            .message("Bạn có muốn cập nhật thông tin tài khoản không")
+            .title("Lỗi")
+            .message("Bạn chưa điền đầy đủ thông tin cá nhân. Bạn có muốn cập nhật thông tin tài khoản không")
             .setRightButton("KHÔNG", object : DialogRightInterface {
                 override fun onClick() {
                     dialog?.dismiss()
@@ -96,7 +95,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
             })
             .setLeftButton("CÓ", object : DialogLeftInterface {
                 override fun onClick() {
-                    findNavController().navigate(R.id.napCofirmFragment)
+                    findNavController().navigate(R.id.action_napFragment_to_editUserFragment)
                     dialog?.dismiss()
                 }
             })
@@ -105,13 +104,14 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     }
 
     private fun updateTheUserPackage() {
-        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
-        userNameHashMap["userPackage"] = binding.tvTengoi.text.toString()
-        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-            findNavController().navigate(R.id.napCofirmFragment)
-        }.addOnFailureListener {
-            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
-        }
+//        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+//        userNameHashMap["userPackage"] = binding.tvTengoi.text.toString()
+//        ref.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+//        }.addOnFailureListener {
+//            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+//        }
+        val bundle = bundleOf("package" to pos)
+        findNavController().navigate(R.id.action_napFragment_to_napCofirmFragment, bundle)
     }
 
     private fun checkForSpinner() {
@@ -131,7 +131,6 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         id: Long,
                     ) {
                         viewModel?.apply {
-                            var pos = 0
                             when (position) {
                                 0 -> {
                                     money.set(list[0])
@@ -193,12 +192,12 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         )
                         return
                     }
-                    if (user?.timesIntroduce?.toInt()!! >= 10) {
+                    if (user.timesIntroduce.toInt() >= 10) {
                         updateTheUserPackage()
                         return
                     }
                     dialog.show(
-                        "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn <=10",
+                        "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn dưới 10",
                         ""
                     )
                 }

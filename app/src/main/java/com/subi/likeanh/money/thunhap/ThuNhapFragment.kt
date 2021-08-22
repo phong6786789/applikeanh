@@ -2,10 +2,10 @@ package com.subi.likeanh.money.thunhap
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,13 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
-import com.subi.likeanh.adapter.LichSuAdapter
 import com.subi.likeanh.adapter.ThuNhapAdapter
-
 import com.subi.likeanh.databinding.FragmentThuNhapBinding
-import com.subi.likeanh.model.History
 import com.subi.likeanh.model.Income
-import com.subi.likeanh.money.lichsu.LichSuFragment
 
 
 class ThuNhapFragment : Fragment() {

@@ -2,4 +2,5 @@
     <string name="app_name">applikeanh</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="note">- Vui lòng chuyển khoản đúng thông tin và số tiền, nội dung yêu cầu như trên, mọi sai sót dẫn đến thất thoát, gửi nhầm chúng tôi không chịu trách nhiệm\n-Khi bạn chuyển đúng số tiền như mong muốn, vui lòng bấm nút ĐÃ CHUYỂN\n- Sau khi chuyển khoản vui lòng đợi admin xác nhận và kiểm tra thông tin, sau khi chúng tôi check thành công sẽ lập tức cjaap nhật số tiền cho bạn theo yêu cầu.\n- Nếu chưa muốn chuyển thì bấm nút HUỶ BỎ</string>
 </resources>

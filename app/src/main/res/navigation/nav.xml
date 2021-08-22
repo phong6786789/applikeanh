@@ -123,9 +123,16 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_napFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_napFragment_to_napCofirmFragment"
+            app:destination="@id/napCofirmFragment" />
     </fragment>
     <fragment
-        android:id=" @+id/thuNhapFragment"
+        android:id="@+id/thuNhapFragment"
         android:name="com.subi.likeanh.money.thunhap.ThuNhapFragment"
         android:label="ThuNhapFragment" />
     <fragment

@@ -2,6 +2,7 @@ package com.subi.likeanh.money.nap
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,15 @@ import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentNapCofirmBinding
-import com.subi.likeanh.model.History
-import com.subi.likeanh.model.User
+import com.subi.likeanh.model.*
 import com.subi.likeanh.utils.LoadingDialog
+import com.subi.likeanh.utils.SendTelegram
+import com.subi.likeanh.utils.Utils.getUID
 import com.subi.nails2022.view.DialogLeftInterface
 import com.subi.nails2022.view.DialogRightInterface
 import com.subi.nails2022.view.ShowDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,14 +44,16 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     private val incomeDatabase =
         FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
     private val rutNapDatabase =
-        FirebaseDatabase.getInstance().getReference("rutnap").child(user!!.uid + "nap")
-
+        FirebaseDatabase.getInstance().getReference("rutnap").child(getUID() + "nap")
+    var pkg = 0
+    var dataFullUser: User? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentNapCofirmBinding.inflate(inflater, container, false)
+
         init()
         checkForSetDataToUserFragment()
         setOnClickForViews()
@@ -101,8 +107,10 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
             userDatabase.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
+                    dataFullUser = user
                     viewModel.user.set(user)
-
+                    Log.d("testkakkaka", "user: $user")
+                    binding.body = "NAP TIEN GOI $pkg"
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -115,7 +123,6 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     private fun setOnClickForViews() {
         binding.btnConfirmNapTien.setOnClickListener {
             showDialogToConfirm()
-
         }
         binding.btnCancelNapTien.setOnClickListener {
             moveToMainActivity()
@@ -125,19 +132,17 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     private fun showDialogToConfirm() {
         var dialog: Dialog? = null
         dialog = ShowDialog.Builder(requireContext())
-            .title("Bạn đã xác nhận chuyển khoản")
+            .title("Bạn có chắc chắn là đã chuyển khoản cho người nhận không?")
             .message("")
             .setRightButton("Bỏ qua", object : DialogRightInterface {
                 override fun onClick() {
                     dialog?.dismiss()
                 }
             })
-            .setLeftButton("Xác nhận", object : DialogLeftInterface {
+            .setLeftButton("Chắc chắn", object : DialogLeftInterface {
                 override fun onClick() {
                     checkForUserInFormation()
-                    dialogA.show("Giao dịch thành công", "Vui lòng chờ admin xác nhận")
                     dialog?.dismiss()
-
                 }
             })
             .confirm()
@@ -148,18 +153,33 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
 
     }
 
+    //CHuyển trạng thái chờ xác nhận, cho  thằng mainActivity giải quyết
     private fun checkForUserInFormation() {
-        val userMoney = binding.edtTotalMoney.text.toString()
-        checkForAddToHistory(userMoney)
-        if (userMoney.isNotEmpty()
-        ) {
-            var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
-            userNameHashMap["transferTime"] = System.currentTimeMillis().toString()
-            userNameHashMap["totalMoney"] = "0"
-            userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+        val naprut = NapRut(getUID(),
+            getListMoney()[pkg - 1].gia,
+            pkg.toString(),
+            System.currentTimeMillis().toString(),
+            false,
+            false)
+        //Đẩy dữ liệu và chờ trạng thái rút
+
+        //Bắn noti telegram
+        rutNapDatabase.setValue(naprut).addOnCompleteListener {
+            val body = "" +
+                    "Tên: ${dataFullUser?.name?.toUpperCase()}" +
+                    "\n STK: ${dataFullUser?.stk}" +
+                    "\n Ngân hàng: ${dataFullUser?.bank}" +
+                    "\n Số tiền: ${getListMoney()[pkg - 1].gia}" +
+                    "\n Gói: $pkg"
+            GlobalScope.launch {
+                if (SendTelegram.send(body)) {
+                }
+                dialogA.show("Giao dịch thành công", "Vui lòng chờ Admin xác nhận")
                 moveToMainActivity()
             }
         }
+
+
     }
 
 
@@ -171,7 +191,15 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
         binding.setVariable(BR.viewModel, viewModel)
         loadingA = LoadingDialog.getInstance(requireContext())
         dialogA = ShowDialog.Builder(requireContext())
-        requireActivity().findViewById<BottomNavigationView>(com.subi.likeanh.R.id.bottom_nav).visibility =
+        pkg = this.arguments?.getInt("package") ?: 1
+        Log.d("confirmPKG", "pkg: $pkg")
+
+        binding.apply {
+            packagex = pkg.toString()
+            money = getListMoney()[pkg - 1].gia
+        }
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
         viewModel.load()
     }

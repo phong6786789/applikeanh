@@ -199,6 +199,5 @@
                     android:text="Hủy Bỏ" />
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </layout>

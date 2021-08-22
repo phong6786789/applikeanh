@@ -7,7 +7,6 @@ import com.subi.likeanh.model.Money
 import com.subi.likeanh.model.User
 
 class NapViewModel : ViewModel() {
-    var pos = ObservableField(0)
     var stk = ObservableField("")
     var user: ObservableField<User> = ObservableField()
 

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.subi.likeanh.databinding.DialogBinding
 
+
 interface DialogLeftInterface {
     fun onClick()
 }
@@ -16,12 +17,19 @@ interface DialogLeftInterface {
 interface DialogRightInterface {
     fun onClick()
 }
+
 class ShowDialog( //add private constructor if necessary
     val title: String?,
     val message: String?,
     val leftButton: String?,
-    val rightButton: String?)  {
-    private constructor(builder: Builder) : this(builder.title, builder.message, builder.leftButton, builder.rightButton)
+    val rightButton: String?
+) {
+    private constructor(builder: Builder) : this(
+        builder.title,
+        builder.message,
+        builder.leftButton,
+        builder.rightButton
+    )
 
     class Builder(context: Context) {
 
@@ -67,8 +75,11 @@ class ShowDialog( //add private constructor if necessary
             val dialog = context?.let { Dialog(it) }
             val binding = DialogBinding.inflate(LayoutInflater.from(context))
             dialog?.apply {
-               setContentView(binding.root)
-                window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                setContentView(binding.root)
+                window?.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 if (window != null) {
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 }
@@ -77,22 +88,26 @@ class ShowDialog( //add private constructor if necessary
                 binding.des = message
                 binding.btnLeft.text = leftButton
                 binding.btnRight.text = rightButton
-                binding.btnLeft.setOnClickListener{
+                binding.btnLeft.setOnClickListener {
                     leftListener?.onClick()
                 }
-                binding.btnRight.setOnClickListener{
+                binding.btnRight.setOnClickListener {
                     rightListener?.onClick()
                 }
 
             }
             return dialog
         }
-        fun show( tit:String, mess:String){
+
+        fun show(tit: String, mess: String) {
             val dialog = context?.let { Dialog(it) }
             val binding = DialogBinding.inflate(LayoutInflater.from(context))
             dialog?.apply {
                 setContentView(binding.root)
-                window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                window?.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 if (window != null) {
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 }
@@ -101,7 +116,7 @@ class ShowDialog( //add private constructor if necessary
                 binding.des = mess
                 binding.btnLeft.visibility = View.GONE
                 binding.btnRight.text = "ĐÓNG"
-                binding.btnRight.setOnClickListener{
+                binding.btnRight.setOnClickListener {
                     dialog.dismiss()
                 }
             }

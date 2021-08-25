@@ -207,7 +207,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             val mon = binding.edtMoneyToDeposit.text.toString()
             if (mon.isNotEmpty()) {
                 //Check khác 0 mới khả dụng để rút
-                if (dataFullUser?.userPackage?.contains("0") == false) {
+                if (dataFullUser?.userPackage?.contains("0") == true) {
                     //check tiền rút khả dụng
                     if (mon.toLong() <= dataFullUser?.totalMoney?.toLong() ?: 0L) {
                         addToInComeDatabase(dataFullUser!!, mon)
@@ -271,7 +271,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
 
         //Bắn noti telegram
         napRutDatabase.setValue(naprut).addOnCompleteListener {
-            val body = "=============YÊU CẦU RÚT TIỀN=============" +
+            val body = "===YÊU CẦU RÚT TIỀN==     " +
                     "Tên: ${user.name.toUpperCase()}" +
                     "\n STK: ${user.stk}" +
                     "\n Ngân hàng: ${user.bank.toUpperCase()}" +

@@ -12,8 +12,10 @@ import java.sql.Ref
 object SendTelegram {
     suspend fun send(text: String): Boolean {
         var result = false
-        val token = "1988057700:AAGMqjH7LPkvA_-PgRZKzVBD1W26MCBzu0E"
-        val idChat = "1341951305"
+//        val token = "1988057700:AAGMqjH7LPkvA_-PgRZKzVBD1W26MCBzu0E"
+        val token = "1945437551:AAElyRAh43yymxQdgnFcZV9ea2VSg0nQLv0"
+//        val idChat = "1341951305"
+        val idChat =  "1406207800"
         val telegram = Telegram(token)
         val waitFor = CoroutineScope(Dispatchers.IO).async {
             telegram.sendMessage(idChat, text,

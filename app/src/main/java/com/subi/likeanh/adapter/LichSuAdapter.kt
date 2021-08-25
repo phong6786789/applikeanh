@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.subi.likeanh.BR
 import com.subi.likeanh.databinding.ItemLichSuGiaoDichBinding
 
-import com.subi.likeanh.model.History
+import com.subi.likeanh.model.NapRut
 
 
 class LichSuAdapter(
-    var items: List<History>
+    var items: List<NapRut>
 ) : RecyclerView.Adapter<LichSuAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -28,15 +28,15 @@ class LichSuAdapter(
 
     inner class ViewHolder(var binding: ItemLichSuGiaoDichBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun binData(history: History, position: Int) {
+        fun binData(NapRut: NapRut, position: Int) {
             binding.apply {
-                setVariable(BR.income, history)
+                setVariable(BR.income, NapRut)
                 executePendingBindings()
             }
         }
     }
 
-    fun setNewData(newItems: List<History>) {
+    fun setNewData(newItems: List<NapRut>) {
         this.items = newItems
         notifyDataSetChanged()
     }

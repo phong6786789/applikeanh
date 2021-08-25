@@ -100,10 +100,10 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome =
-            History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap", "False")
-        incomeDatabase.child(value).setValue(inCome)
-        rutNapDatabase.setValue(inCome)
+//        val inCome =
+//            History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap", "False")
+//        incomeDatabase.child(value).setValue(inCome)
+//        rutNapDatabase.setValue(inCome)
     }
 
     private fun convertTime(time: Long): String {
@@ -203,7 +203,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
 
         //Bắn noti telegram
         rutNapDatabase.setValue(naprut).addOnCompleteListener {
-            val body = "=============YÊU CẦU NẠP TIỀN=============" +
+            val body = "===YÊU CẦU NẠP TIỀN==     " +
                     "Tên: ${dataFullUser?.name?.toUpperCase()}" +
                     "\n STK: ${dataFullUser?.stk}" +
                     "\n Ngân hàng: ${dataFullUser?.bank}" +

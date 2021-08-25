@@ -113,7 +113,6 @@ class HomeFragment : Fragment(), OnItemClick {
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             })
         }
     }
@@ -281,6 +280,26 @@ class HomeFragment : Fragment(), OnItemClick {
         binding.setVariable(BR.viewModel, viewModel)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
+        val database = FirebaseDatabase.getInstance().getReference("user")
+        database.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //Check block account
+                    if (snapshot.child("status")
+                            .getValue(Boolean::class.java) == false
+                    ) {
+                        FirebaseAuth.getInstance().signOut()
+                        requireActivity().onBackPressed()
+                        dialog.show("Lỗi",
+                            "Tài khoản của bạn đã bị khoá, vui lòng liên hệ admin!")
+                        return
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
     private fun getDataForRecyclerView(): List<Product> {
@@ -500,10 +519,7 @@ class HomeFragment : Fragment(), OnItemClick {
         return list
     }
 
-
     companion object {
         private const val TAG = "HomeFragment"
     }
-
-
 }

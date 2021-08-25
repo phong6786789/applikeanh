@@ -6,7 +6,7 @@
 
         <variable
             name="income"
-            type="com.subi.likeanh.model.History" />
+            type="com.subi.likeanh.model.NapRut" />
     </data>
 
     <RelativeLayout
@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@{income.userDate}" />
+                        android:text="@{income.time}" />
 
                 </LinearLayout>
             </LinearLayout>

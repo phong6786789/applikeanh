@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.databinding.FragmentLoginBinding
 import com.subi.nails2022.view.ShowDialog
 import com.subi.likeanh.utils.LoadingDialog
+import com.subi.likeanh.utils.Utils
 
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
@@ -47,36 +48,37 @@ class LoginFragment : Fragment() {
                         auth.signInWithEmailAndPassword("$sdtx@gmail.com", pass1)
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-
-                                    database.child(FirebaseAuth.getInstance().currentUser?.uid.toString()).addListenerForSingleValueEvent(object : ValueEventListener{
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            val keyID  = snapshot.child("idPhone").getValue(String::class.java)
-                                            if (keyID==""){
-                                                database.child(FirebaseAuth.getInstance().currentUser?.uid.toString()).child("idPhone").setValue(androidID).addOnCompleteListener {
-                                                    dialog.show("Chúc mừng!",
-                                                        "Đăng nhập thành công!")
-                                                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                                                    loading.dismiss()
-                                                }
+                                    database.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                                        .addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
+                                            override fun onDataChange(snapshot: DataSnapshot) {
+                                                    val keyID = snapshot.child("idPhone")
+                                                        .getValue(String::class.java)
+                                                    if (keyID == "") {
+                                                        database.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                                                            .child("idPhone").setValue(androidID)
+                                                            .addOnCompleteListener {
+                                                                dialog.show("Chúc mừng!",
+                                                                    "Đăng nhập thành công!")
+                                                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                                                                loading.dismiss()
+                                                            }
+                                                    } else if (keyID.equals(androidID)) {
+                                                        dialog.show("Chúc mừng!",
+                                                            "Đăng nhập thành công!")
+                                                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                                                        loading.dismiss()
+                                                    } else {
+                                                        FirebaseAuth.getInstance().signOut()
+                                                        loading.dismiss()
+                                                        dialog.show("Thất bại!",
+                                                            "Tài khoản chỉ được đăng nhập ở 1 máy duy nhất!")
+                                                    }
                                             }
-                                            else if (keyID.equals(androidID)){
-                                                dialog.show("Chúc mừng!",
-                                                    "Đăng nhập thành công!")
-                                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                                                loading.dismiss()
-                                            }
-                                            else{
-                                                FirebaseAuth.getInstance().signOut()
-                                                loading.dismiss()
-                                                dialog.show("Thất bại!",
-                                                    "Tài khoản chỉ được đăng nhập ở 1 máy duy nhất!")
-                                            }
-                                        }
 
-                                        override fun onCancelled(error: DatabaseError) {
-                                        }
-
-                                    })
+                                            override fun onCancelled(error: DatabaseError) {
+                                            }
+                                        })
                                 } else {
                                     dialog.show("Thông báo", "Sai tài khoản hoặc mật khẩu!")
                                     loading.dismiss()
@@ -97,12 +99,15 @@ class LoginFragment : Fragment() {
         return binding.root;
     }
 
+
     fun init() {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        }
-        loading = LoadingDialog.getInstance(requireContext())
         dialog = ShowDialog.Builder(requireContext())
+        loading = LoadingDialog.getInstance(requireContext())
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            //Check block acc
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+
+        }
     }
 }

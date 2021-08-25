@@ -18,7 +18,7 @@ import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.adapter.LichSuAdapter
 import com.subi.likeanh.databinding.FragmentLichSuBinding
-import com.subi.likeanh.model.History
+import com.subi.likeanh.model.NapRut
 
 class LichSuFragment : Fragment() {
     private var lichSuAdapter: LichSuAdapter? = null
@@ -43,7 +43,7 @@ class LichSuFragment : Fragment() {
     }
 
     private fun initRecyclerViews() {
-        val list = arrayListOf<History>()
+        val list = arrayListOf<NapRut>()
         lichSuAdapter = LichSuAdapter(list)
         binding.apply {
             rcvLichSu.apply {
@@ -64,18 +64,18 @@ class LichSuFragment : Fragment() {
 
     private fun checkForSetDataToUserFragment() {
         if (user != null) {
-            incomeDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            incomeDatabase.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val list = arrayListOf<History>()
+                    val list = arrayListOf<NapRut>()
                     for (data in snapshot.children) {
-                        val income = data.getValue(History::class.java)
-                        if (income?.userStatus == "true") {
+                        val income = data.getValue(NapRut::class.java)
+                        if (income != null) {
                             list.add(income)
                         }
                     }
                     lichSuAdapter?.setNewData(list)
+                    binding.rcvLichSu.scheduleLayoutAnimation()
                     Log.d(TAG, "onDataChange: ${list.size}")
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {

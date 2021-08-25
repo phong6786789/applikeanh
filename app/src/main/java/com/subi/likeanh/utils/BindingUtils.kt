@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.subi.likeanh.R
 import com.subi.likeanh.model.History
+import com.subi.likeanh.model.NapRut
 import java.lang.Exception
 import java.text.DecimalFormat
 
@@ -43,8 +44,8 @@ object BindingUtils {
 
     @BindingAdapter("setImageForIncomeType")
     @JvmStatic
-    fun incomeType(img: ImageView, history: History) {
-        if (history.userType == "Nap") {
+    fun incomeType(img: ImageView, history: NapRut) {
+        if (!history.isRut) {
             Glide.with(img).load(R.drawable.ic_plus).into(img)
             return
         }
@@ -55,14 +56,14 @@ object BindingUtils {
     @SuppressLint("ResourceAsColor")
     @BindingAdapter("setTextForIncomeType")
     @JvmStatic
-    fun incomeType(tv: TextView, history: History) {
+    fun incomeType(tv: TextView, history: NapRut) {
         val fm = DecimalFormat("#,###")
-        if (history.userType == "Nap") {
-            tv.text = "Bạn đã nạp + ${fm.format(history?.userMoney.toLong())} VNĐ"
+        if (!history.isRut) {
+            tv.text = "Bạn đã nạp + ${fm.format(history?.money.toLong())} VNĐ"
             tv.setTextColor(R.color.nap)
             return
         }
-        tv.text = "Bạn đã rút - ${fm.format(history?.userMoney.toLong())} VNĐ"
+        tv.text = "Bạn đã rút - ${fm.format(history?.money.toLong())} VNĐ"
         tv.setTextColor(R.color.rut)
 
     }

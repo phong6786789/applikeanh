@@ -64,13 +64,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_moneyFragment_to_rutFragment"
-            app:destination="@id/rutFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
             android:id="@+id/action_moneyFragment_to_thuNhapFragment"
             app:destination="@id/thuNhapFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -135,10 +128,6 @@
         android:id="@+id/thuNhapFragment"
         android:name="com.subi.likeanh.money.thunhap.ThuNhapFragment"
         android:label="ThuNhapFragment" />
-    <fragment
-        android:id="@+id/rutFragment"
-        android:name="com.subi.likeanh.money.rut.RutFragment"
-        android:label="RutFragment" />
     <fragment
         android:id="@+id/editUserFragment"
         android:name="com.subi.likeanh.user.EditUserFragment"

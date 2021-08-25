@@ -20,6 +20,7 @@ import com.subi.likeanh.databinding.FragmentRegBinding
 import com.subi.likeanh.model.User
 import com.subi.nails2022.view.ShowDialog
 import com.subi.likeanh.utils.LoadingDialog
+import com.subi.likeanh.utils.Utils
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegBinding
@@ -119,6 +120,9 @@ class RegisterFragment : Fragment() {
                                                                     "Chúc mừng!",
                                                                     "Đăng ký thành công!"
                                                                 )
+                                                             val rn =   FirebaseDatabase.getInstance().getReference("rutnap")
+                                                                rn.child(Utils.getUID() + "nap").child("status").setValue(true)
+                                                                rn.child(Utils.getUID() + "rut").child("status").setValue(true)
                                                                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                                                                 loading.dismiss()
                                                             }

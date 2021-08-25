@@ -53,19 +53,60 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentNapCofirmBinding.inflate(inflater, container, false)
-
         init()
-        checkForSetDataToUserFragment()
-        setOnClickForViews()
+
+        //Check nạp
+        rutNapDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //Có thể rút và nạp nếu status true
+                if (snapshot.child("status").getValue(Boolean::class.java) == true) {
+                    checkForSetDataToUserFragment()
+                    setInfoAdmin()
+                    setOnClickForViews()
+                } else {
+                    dialogA.show(
+                        "Thông báo",
+                        "Bạn đã có yêu cầu nạp, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!"
+                    )
+                    requireActivity().onBackPressed()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+
 
         return binding.root;
     }
 
+    private fun setInfoAdmin() {
+        FirebaseDatabase.getInstance().getReference("admin")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val name = snapshot.child("name").getValue(String::class.java).toString()
+                    val bank = snapshot.child("name").getValue(String::class.java).toString()
+                    val stk = snapshot.child("stk").getValue(String::class.java).toString()
+
+                    val user = User()
+                    user.name = name
+                    user.bank = bank
+                    user.stk = stk
+                    viewModel.user.set(user)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+    }
+
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
-        val inCome =
-            History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap", "False")
-        incomeDatabase.child(value).setValue(inCome)
-        rutNapDatabase.setValue(inCome)
+//        val inCome =
+//            History(userName, userMoney, convertTime(System.currentTimeMillis()), "Nap", "False")
+//        incomeDatabase.child(value).setValue(inCome)
+//        rutNapDatabase.setValue(inCome)
     }
 
     private fun convertTime(time: Long): String {
@@ -108,7 +149,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     dataFullUser = user
-                    viewModel.user.set(user)
+//                    viewModel.user.set(user)
                     Log.d("testkakkaka", "user: $user")
                     binding.body = "NAP TIEN GOI $pkg"
                 }
@@ -155,31 +196,32 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
 
     //CHuyển trạng thái chờ xác nhận, cho  thằng mainActivity giải quyết
     private fun checkForUserInFormation() {
-        val naprut = NapRut(getUID(),
+        val naprut = NapRut(
+            getUID(),
             getListMoney()[pkg - 1].gia,
             pkg.toString(),
             System.currentTimeMillis().toString(),
             false,
-            false)
+            false
+        )
         //Đẩy dữ liệu và chờ trạng thái rút
 
         //Bắn noti telegram
         rutNapDatabase.setValue(naprut).addOnCompleteListener {
-            val body = "" +
+            val body = "===YÊU CẦU NẠP TIỀN==     " +
                     "Tên: ${dataFullUser?.name?.toUpperCase()}" +
                     "\n STK: ${dataFullUser?.stk}" +
                     "\n Ngân hàng: ${dataFullUser?.bank}" +
                     "\n Số tiền: ${getListMoney()[pkg - 1].gia}" +
                     "\n Gói: $pkg"
             GlobalScope.launch {
-                if (SendTelegram.send(body)) {
-                }
+                SendTelegram.send(body)
+                requireActivity().runOnUiThread {
                 dialogA.show("Giao dịch thành công", "Vui lòng chờ Admin xác nhận")
                 moveToMainActivity()
+                }
             }
         }
-
-
     }
 
 

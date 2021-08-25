@@ -28,6 +28,7 @@ import com.subi.likeanh.model.History
 import com.subi.likeanh.model.User
 import com.subi.likeanh.money.lichsu.LichSuFragment
 import com.subi.likeanh.utils.LoadingDialog
+import com.subi.likeanh.utils.Utils
 import com.subi.nails2022.view.ShowDialog
 
 class RankFragment : Fragment() {
@@ -57,15 +58,6 @@ class RankFragment : Fragment() {
 
     private fun initRecyclerViews() {
         val list = arrayListOf<User>()
-        rankAdapter = RankAdapter(list)
-        binding.apply {
-            rcv.apply {
-                adapter = rankAdapter
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                hasFixedSize()
-            }
-        }
         checkForSetDataToUserFragment()
     }
 
@@ -84,45 +76,56 @@ class RankFragment : Fragment() {
                     }
 
                     list.sortByDescending {
-                        it.totalMoney.toInt()
+                        it.totalMoney.toLong()
                     }
 
                     when (list.size) {
                         1 -> {
                             binding.tvTop1.text = list[0].name
+
+                            binding.moneyTop1.text = Utils.getFMoney(list[0].totalMoney)
                         }
                         2 -> {
-                            binding.tvTop1.text = list[0].name
-                            binding.tvTop2.text = list[1].name
+                            binding.tvTop1.text =  Utils.getFMoney(list[0].name)
+                            binding.tvTop2.text = Utils.getFMoney(list[1].name)
+
+                            binding.moneyTop1.text =  Utils.getFMoney(list[0].totalMoney)
+                            binding.moneyTop2.text =  Utils.getFMoney(list[1].totalMoney)
+
                         }
                         3 -> {
                             binding.tvTop1.text = list[0].name
                             binding.tvTop2.text = list[1].name
                             binding.tvTop3.text = list[2].name
+
+                            binding.moneyTop1.text =  Utils.getFMoney(list[0].totalMoney)
+                            binding.moneyTop2.text =  Utils.getFMoney(list[1].totalMoney)
+                            binding.moneyTop3.text =  Utils.getFMoney(list[2].totalMoney)
                         }
                     }
 
-                    if (list.size > 3) {
+                    if (list.size >= 3) {
                         list.removeAt(0)
-                        list.removeAt(1)
-                        list.removeAt(2)
-                        rankAdapter?.setNewData(list)
-                        return
+                        list.removeAt(0)
+                        list.removeAt(0)
                     }
-                    Log.d(TAG, "onDataChange: ${list.size}")
-
+                    rankAdapter = RankAdapter(list)
+                    binding.apply {
+                        rcv.apply {
+                            adapter = rankAdapter
+                            layoutManager =
+                                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                            hasFixedSize()
+                            scheduleLayoutAnimation()
+                        }
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
 
                 }
-
             })
         }
-    }
-
-    private fun checkToSetDataForTop1() {
-
     }
 
     companion object {

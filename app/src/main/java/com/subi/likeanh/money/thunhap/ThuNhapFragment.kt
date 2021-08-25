@@ -68,6 +68,7 @@ class ThuNhapFragment : Fragment() {
                         list.add(income!!)
                     }
                     thuNhapAdapter?.setNewData(list)
+                    binding.rcvThuNhap.scheduleLayoutAnimation()
                     Log.d(TAG, "onDataChange: ${list.size}")
 
                 }

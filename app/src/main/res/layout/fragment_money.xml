@@ -57,18 +57,43 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/gradien">
 
-                        <TextView
-                            setMoney="@{viewModel.user.totalMoney}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                        <LinearLayout
                             android:layout_above="@id/info"
                             android:layout_alignParentTop="true"
                             android:layout_toLeftOf="@id/logo"
-                            android:gravity="center"
-                            android:paddingTop="16dp"
-                            android:textColor="#FFEB3B"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:paddingLeft="10dp"
+                                setMoney="@{viewModel.user.totalMoney}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:textColor="#FFEB3B"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:paddingLeft="10dp"
+                                setGoi="@{viewModel.user.userPackage}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:textColor="#FFEB3B"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:paddingLeft="10dp"
+                                setGT="@{viewModel.user.transferTime}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:textColor="#FFEB3B"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/logo"
@@ -121,12 +146,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="5dp"
                     android:layout_weight="1"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="8dp">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"

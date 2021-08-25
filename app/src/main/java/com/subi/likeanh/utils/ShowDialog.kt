@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.subi.likeanh.R
 import com.subi.likeanh.databinding.DialogBinding
 
 
@@ -111,7 +112,7 @@ class ShowDialog( //add private constructor if necessary
                 if (window != null) {
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 }
-//              window?.setWindowAnimations(R.style.Animation_Activity)
+//                window?.setWindowAnimations(R.style.Animation_Activity)
                 binding.title = tit
                 binding.des = mess
                 binding.btnLeft.visibility = View.GONE

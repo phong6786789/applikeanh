@@ -1,6 +1,7 @@
 package com.subi.likeanh.money.ruta
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +19,13 @@ import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentRut2Binding
-import com.subi.likeanh.model.History
-import com.subi.likeanh.model.Income
-import com.subi.likeanh.model.User
+import com.subi.likeanh.model.*
 import com.subi.likeanh.utils.LoadingDialog
+import com.subi.likeanh.utils.SendTelegram
+import com.subi.likeanh.utils.Utils
 import com.subi.nails2022.view.ShowDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,13 +38,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     private var user = FirebaseAuth.getInstance().currentUser
     private lateinit var dialog: ShowDialog.Builder
     private lateinit var loading: LoadingDialog
+    var dataFullUser: User? = null
     private val userDatabase =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private val incomeDatabase =
         FirebaseDatabase.getInstance().getReference("income").child(user!!.uid)
     private val napRutDatabase =
-        FirebaseDatabase.getInstance().getReference("rutnap")
-    private val TG_PASSPORT_RESULT = 352
+        FirebaseDatabase.getInstance().getReference("rutnap").child(Utils.getUID() + "rut")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,10 +53,25 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentRut2Binding.inflate(inflater, container, false)
         init()
-        setOnClickForViews()
-        binding.apply {
 
-        }
+        //Check nạp
+        napRutDatabase.addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //Có thể rút và nạp nếu status true
+                if (snapshot.child("status").getValue(Boolean::class.java)==true){
+                    checkForSetDataToUserFragment()
+                    setOnClickForViews()
+                }
+                else{
+                    dialog.show("Thông báo", "Bạn đã có yêu cầu rút, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!")
+                    requireActivity().onBackPressed()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
 
         return binding.root;
     }
@@ -69,6 +87,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
                     viewModel.user.set(user)
+                    dataFullUser = user
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -81,7 +100,6 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         loading = LoadingDialog.getInstance(requireContext())
         dialog = ShowDialog.Builder(requireContext())
         binding.setVariable(BR.viewModel, viewModel)
-        checkForSetDataToUserFragment()
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
     }
@@ -106,14 +124,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
 
-
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }
     }
 
+    //Check hạn rúttiền
     fun checkTheAvailableTime(number: Int, currentTime: Long, money: Long, moneyDeposit: String) {
-
         when (number) {
             1 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
@@ -187,79 +204,122 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
 
     private fun checkForDeposit() {
         if (user != null) {
-            userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (binding.edtMoneyToDeposit.text.toString().isNotEmpty()) {
-                        val user = snapshot.getValue(User::class.java)
-                        val moneyDeposit = user?.totalMoney.toString()
-                            .toLong() - binding.edtMoneyToDeposit.text.toString().toLong()
-
-                        if (moneyDeposit >= 0) {
-                            checkTheAvailableTime(
-                                user?.userPackage?.toInt()!!,
-                                user.transferTime.toLong(),
-                                moneyDeposit,
-                                binding.edtMoneyToDeposit.text.toString()
-                            )
-                            Log.d(TAG, "onDataChange: $moneyDeposit")
-                            return
-                        }
-                        Log.d(TAG, "onDataChange: khong hope le")
-                        Toast.makeText(context, "Khong hop le", Toast.LENGTH_SHORT).show()
-                        return
+            val mon = binding.edtMoneyToDeposit.text.toString()
+            if (mon.isNotEmpty()) {
+                //Check khác 0 mới khả dụng để rút
+                if (dataFullUser?.userPackage?.contains("0") == true) {
+                    //check tiền rút khả dụng
+                    if (mon.toLong() <= dataFullUser?.totalMoney?.toLong() ?: 0L) {
+                        addToInComeDatabase(dataFullUser!!, mon)
+                    } else {
+                        Toast.makeText(context, "Số tiền rút quá hạn mức", Toast.LENGTH_SHORT).show()
                     }
-                    Log.d(TAG, "onDataChange:Không được bỏ trống thông tin")
-                    Toast.makeText(context, "Không được bỏ trống thông tin", Toast.LENGTH_SHORT)
-                        .show()
+                } else {
+                    Toast.makeText(context, "Chưa đến hạn để rút tiền", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(context, "Vui lòng nhập số tiền cần rút", Toast.LENGTH_SHORT).show()
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                }
 
-            })
-
+//            userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    if (binding.edtMoneyToDeposit.text.toString().isNotEmpty()) {
+//                        val user = snapshot.getValue(User::class.java)
+//                        val moneyDeposit = user?.totalMoney.toString()
+//                            .toLong() - binding.edtMoneyToDeposit.text.toString().toLong()
+//
+//                        if (moneyDeposit >= 0) {
+//                            checkTheAvailableTime(
+//                                user?.userPackage?.toInt()!!,
+//                                user.transferTime.toLong(),
+//                                moneyDeposit,
+//                                binding.edtMoneyToDeposit.text.toString()
+//                            )
+//                            Log.d(TAG, "onDataChange: $moneyDeposit")
+//                            return
+//                        }
+//                        Toast.makeText(context,
+//                            "Chưa đến hạn để rút hoặc không đủ tiền rút!",
+//                            Toast.LENGTH_SHORT).show()
+//                        return
+//                    }
+//                    Log.d(TAG, "onDataChange:Không được bỏ trống thông tin")
+//                    Toast.makeText(context, "Vui lòng nhập số tiền cần rút", Toast.LENGTH_SHORT)
+//                        .show()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//
+//            })
         }
 
     }
 
+    //Gửi yêu cầu rút tiền và trạng thái
     private fun addToInComeDatabase(
-        value: String,
-        userName: String,
-        userMoney: String,
-        currentIndex: String
+        user: User,
+        tienrut: String,
     ) {
-        napRutDatabase.child(user!!.uid + "rut")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val rut = snapshot.getValue(Income::class.java)
-                    if (rut == null) {
-                        val inCome = History(
-                            userName,
-                            userMoney,
-                            convertTime(System.currentTimeMillis()),
-                            "Rut", "False"
-                        )
-                        incomeDatabase.child(value).setValue(inCome)
-                        napRutDatabase.child(user!!.uid + "rut").setValue(inCome)
-                        updateTheIndexOfTheUser(currentIndex)
-                        dialog.show(
-                            "Giao dịch thành công",
-                            "Giao dịch thành công admin đang thực hiện yêu cầu của bạn, vui lòng chờ đợi"
-                        )
-                        moveToHomeFragment()
-                        return
-                    }
-                    dialog.show(
-                        "Giao dịch thất bại",
-                        "Giao dịch cũ của bạn đang được admin xử lý, vui lòng chờ đợi"
-                    )
-                }
+        val naprut = NapRut(Utils.getUID(),
+            tienrut,
+            user.userPackage,
+            System.currentTimeMillis().toString(),
+            true,
+            false)
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
+        //Bắn noti telegram
+        napRutDatabase.setValue(naprut).addOnCompleteListener {
+            val body = "===YÊU CẦU RÚT TIỀN==     " +
+                    "Tên: ${user.name.toUpperCase()}" +
+                    "\n STK: ${user.stk}" +
+                    "\n Ngân hàng: ${user.bank.toUpperCase()}" +
+                    "\n Số tiền yêu cầu rút: $tienrut"
+            GlobalScope.launch {
+                SendTelegram.send(body)
+                   requireActivity().runOnUiThread {
+                       dialog.show(
+                           "Giao dịch thành công",
+                           "Admin đang xử lý yêu cầu của bạn, vui lòng chờ đợi"
+                       )
+                       moveToHomeFragment()
+                   }
+            }
+        }
 
-            })
+//        napRutDatabase.child(user!!.uid + "rut")
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val rut = snapshot.getValue(Income::class.java)
+//                    if (rut == null) {
+//                        val inCome = History(
+//                            userName,
+//                            userMoney,
+//                            convertTime(System.currentTimeMillis()),
+//                            "Rut", "False"
+//                        )
+//                        incomeDatabase.child(value).setValue(inCome)
+//                        napRutDatabase.child(user!!.uid + "rut").setValue(inCome)
+//                        updateTheIndexOfTheUser(currentIndex)
+//                        dialog.show(
+//                            "Giao dịch thành công",
+//                            "Admin đang xử lý yêu cầu của bạn, vui lòng chờ đợi"
+//                        )
+//                        moveToHomeFragment()
+//                        return
+//                    }
+//                    dialog.show(
+//                        "Giao dịch thất bại",
+//                        "Giao dịch cũ của bạn đang được admin xử lý, vui lòng chờ đợi"
+//                    )
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    TODO("Not yet implemented")
+//                }
+//
+//            })
 
 
     }
@@ -280,13 +340,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
 
-    private fun checkForAddToHistory(userMoney: String) {
+    private fun checkForAddToHistory(tienRut: String) {
         if (user != null) {
             userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
-                    val currentIndex = user?.index!!.toInt() + 1
-                    addToInComeDatabase(user.index, user.name, userMoney, currentIndex.toString())
+
+                    user?.let { addToInComeDatabase(it, tienRut) }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

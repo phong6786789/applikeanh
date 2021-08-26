@@ -1,7 +1,6 @@
 package com.subi.likeanh.money.ruta
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,15 +54,17 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         init()
 
         //Check nạp
-        napRutDatabase.addListenerForSingleValueEvent(object :ValueEventListener{
+        napRutDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //Có thể rút và nạp nếu status true
-                if (snapshot.child("status").getValue(Boolean::class.java)==true){
+                if (snapshot.child("status").getValue(Boolean::class.java) == true) {
                     checkForSetDataToUserFragment()
                     setOnClickForViews()
-                }
-                else{
-                    dialog.show("Thông báo", "Bạn đã có yêu cầu rút, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!")
+                } else {
+                    dialog.show(
+                        "Thông báo",
+                        "Bạn đã có yêu cầu rút, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!"
+                    )
                     requireActivity().onBackPressed()
                 }
             }
@@ -119,7 +120,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         findNavController().navigate(R.id.homeFragment)
     }
 
-    private fun updateTheUserPackage(totalMoney: String) {
+    private fun updateTotalMoney(totalMoney: String) {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["totalMoney"] = totalMoney
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
@@ -130,15 +131,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
     //Check hạn rúttiền
-    fun checkTheAvailableTime(number: Int, currentTime: Long, money: Long, moneyDeposit: String) {
-        when (number) {
+    fun checkTheAvailableTime(userPackage: Int, currentTime: Long, moneyDeposit: String) {
+        when (userPackage) {
             1 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                Log.d(TAG, "onDataChange: $checkTime")
-                if (checkTime <= 3) {
+                if (checkTime >= 3) {
                     checkForAddToHistory(moneyDeposit)
-                    Log.d("mmm", "checkTheAvailableTime: ")
                     return
                 }
                 return
@@ -146,7 +145,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             2 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 7) {
+                if (checkTime >= 7) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -155,7 +154,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             3 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 20) {
+                if (checkTime >= 20) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -164,7 +163,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             4 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 30) {
+                if (checkTime >= 30) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -173,7 +172,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             5 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 40) {
+                if (checkTime >= 40) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -182,7 +181,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             6 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 50) {
+                if (checkTime >= 50) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -191,7 +190,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             7 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
                 val checkTime = (availableTime / (1000 * 60 * 60 * 24))
-                if (checkTime <= 68) {
+                if (checkTime >= 68) {
                     checkForAddToHistory(moneyDeposit)
                     return
                 }
@@ -212,13 +211,19 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                     if (mon.toLong() <= dataFullUser?.totalMoney?.toLong() ?: 0L) {
                         addToInComeDatabase(dataFullUser!!, mon)
                     } else {
-                        Toast.makeText(context, "Số tiền rút quá hạn mức", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Số tiền rút quá hạn mức", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 } else {
                     Toast.makeText(context, "Chưa đến hạn để rút tiền", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(context, "Vui lòng nhập số tiền cần rút", Toast.LENGTH_SHORT).show()
+                checkTheAvailableTime(
+                    dataFullUser?.userPackage!!.toInt(),
+                    dataFullUser?.currentDate!!.toLong(),
+                    binding.edtMoneyToDeposit.text.toString()
+                )
             }
 
 
@@ -262,12 +267,14 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
         user: User,
         tienrut: String,
     ) {
-        val naprut = NapRut(Utils.getUID(),
+        val naprut = NapRut(
+            Utils.getUID(),
             tienrut,
             user.userPackage,
             System.currentTimeMillis().toString(),
             true,
-            false)
+            false
+        )
 
         //Bắn noti telegram
         napRutDatabase.setValue(naprut).addOnCompleteListener {
@@ -278,13 +285,13 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                     "\n Số tiền yêu cầu rút: $tienrut"
             GlobalScope.launch {
                 SendTelegram.send(body)
-                   requireActivity().runOnUiThread {
-                       dialog.show(
-                           "Giao dịch thành công",
-                           "Admin đang xử lý yêu cầu của bạn, vui lòng chờ đợi"
-                       )
-                       moveToHomeFragment()
-                   }
+                requireActivity().runOnUiThread {
+                    dialog.show(
+                        "Giao dịch thành công",
+                        "Admin đang xử lý yêu cầu của bạn, vui lòng chờ đợi"
+                    )
+                    moveToHomeFragment()
+                }
             }
         }
 
@@ -345,7 +352,6 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
             userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
-
                     user?.let { addToInComeDatabase(it, tienRut) }
                 }
 

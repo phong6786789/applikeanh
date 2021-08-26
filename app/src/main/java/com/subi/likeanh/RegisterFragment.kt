@@ -112,7 +112,7 @@ class RegisterFragment : Fragment() {
                                                             "true",
                                                             "0",
                                                             "0",
-                                                            "0"
+                                                            "0", ""
                                                         )
                                                         database.child(uid).setValue(user)
                                                             .addOnCompleteListener {
@@ -120,9 +120,13 @@ class RegisterFragment : Fragment() {
                                                                     "Chúc mừng!",
                                                                     "Đăng ký thành công!"
                                                                 )
-                                                             val rn =   FirebaseDatabase.getInstance().getReference("rutnap")
-                                                                rn.child(Utils.getUID() + "nap").child("status").setValue(true)
-                                                                rn.child(Utils.getUID() + "rut").child("status").setValue(true)
+                                                                val rn =
+                                                                    FirebaseDatabase.getInstance()
+                                                                        .getReference("rutnap")
+                                                                rn.child(Utils.getUID() + "nap")
+                                                                    .child("status").setValue(true)
+                                                                rn.child(Utils.getUID() + "rut")
+                                                                    .child("status").setValue(true)
                                                                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                                                                 loading.dismiss()
                                                             }

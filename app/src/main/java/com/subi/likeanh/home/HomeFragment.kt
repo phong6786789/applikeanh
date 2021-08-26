@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,10 +23,6 @@ import com.subi.likeanh.databinding.FragmentHomeBinding
 import com.subi.likeanh.model.*
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.URL
 import java.text.Format
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,10 +58,9 @@ class HomeFragment : Fragment(), OnItemClick {
             }
         }
         checkToUpdateTheIsLikeInFirebase()
-//        val thread = MyThread()
-//        thread.start()
         return binding.root;
     }
+
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {
         val income =
             Income(userName, userMoney, convertTimeForInCome(System.currentTimeMillis()), "0")
@@ -82,10 +78,8 @@ class HomeFragment : Fragment(), OnItemClick {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["numberLikes"] = valueA
         userNameHashMap["totalLike"] = valueB
-        userNameHashMap["totalLike"] = valueB
         userNameHashMap["totalMoney"] = valueC
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-
         }.addOnFailureListener {
             Log.d("kienda", "updateTheUserPackage: + ${it.message}")
         }
@@ -102,11 +96,13 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
     private fun checkForSetDataToUserFragment() {
+        Log.d(TAG, "checkForSetDataToUserFragment: ")
         if (user != null) {
             val ref =
                 FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, "onDataChange: ")
                     val user = snapshot.getValue(User::class.java)
                     checkToUpdateTheLike(user!!)
                 }
@@ -117,9 +113,8 @@ class HomeFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun updateTheCurrentInFirebase(value: String) {
+    private fun updateTheCurrentInFirebase() {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
-        userNameHashMap["currentDate"] = value
         userNameHashMap["isAvailableToLike"] = "true"
         userNameHashMap["numberLikes"] = "0"
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
@@ -129,36 +124,103 @@ class HomeFragment : Fragment(), OnItemClick {
         }
     }
 
+    private fun updateTheCurrentInFirebaseB() {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["currentDate"] = convertTimeDay(System.currentTimeMillis())
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
+    }
+
     private fun checkToUpdateTheIsLikeInFirebase() {
+        Log.d(TAG, "checkToUpdateTheIsLikeInFirebase: ")
         if (user != null) {
-            val ref =
-                FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
-            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val user = snapshot.getValue(User::class.java)
-                    if (user?.currentDate != convertTime(System.currentTimeMillis())) {
-                        updateTheCurrentInFirebase(convertTime(System.currentTimeMillis()))
-                        return
+                    if (user?.currentDate != convertTimeDay(System.currentTimeMillis())) {
+                        checkToUpdateCurrentDateInFirebase(user!!)
+                        updateTheCurrentInFirebaseB()
                     }
+
 
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "onDataChange: B")
                 }
 
             })
         }
     }
 
-    private fun convertTime(time: Long): String {
+    private fun checkUpdateDate(availableTime: Long, expireDate: Long) {
+        if (availableTime <= expireDate) {
+            updateTheCurrentInFirebase()
+            return
+        }
+        dialog.show(
+            "Gói của bạn đã hết hạn",
+            "Bạn cần nạp tiền để thêm gói mới để có thể tiếp tục like"
+        )
+    }
+
+
+    private fun checkToUpdateCurrentDateInFirebase(user: User) {
+        when (user.userPackage.toInt()) {
+            1 -> {
+                val timeExpireDate = user.tempDate.toLong() + 3 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            2 -> {
+                val timeExpireDate = user.tempDate.toLong() + 7 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            3 -> {
+                val timeExpireDate = user.tempDate.toLong() + 20 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            4 -> {
+                val timeExpireDate = user.tempDate.toLong() + 30 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            5 -> {
+                val timeExpireDate = user.tempDate.toLong() + 40 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            6 -> {
+                val timeExpireDate = user.tempDate.toLong() + 50 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+            7 -> {
+                val timeExpireDate = user.tempDate.toLong() + 68 * 86400
+                checkUpdateDate(user.tempDate.toLong(), timeExpireDate)
+            }
+        }
+    }
+
+    private fun convertTimeDay(time: Long): String {
         val date = Date(time)
         val format: Format = SimpleDateFormat("dd")
         return format.format(date)
     }
 
 
+    private fun convertTimeMonth(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("MM")
+        return format.format(date)
+    }
+
+
     private fun checkToUpdateTheLike(user: User) {
+        Log.d(TAG, "checkToUpdateTheLike: ")
         when (user.userPackage.toInt()) {
+            0 -> {
+                dialog.show("Thất bại", "Bạn cần đăng kí 1 gói nào đó để like ảnh")
+            }
             1 -> {
                 if (user.isAvailableToLike == "true") {
                     if (user.numberLikes.toInt() >= 30) {
@@ -291,8 +353,10 @@ class HomeFragment : Fragment(), OnItemClick {
                     ) {
                         FirebaseAuth.getInstance().signOut()
                         requireActivity().onBackPressed()
-                        dialog.show("Lỗi",
-                            "Tài khoản của bạn đã bị khoá, vui lòng liên hệ admin!")
+                        dialog.show(
+                            "Lỗi",
+                            "Tài khoản của bạn đã bị khoá, vui lòng liên hệ admin!"
+                        )
                         return
                     }
                 }

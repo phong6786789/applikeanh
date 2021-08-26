@@ -63,6 +63,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
                     checkForSetDataToUserFragment()
                     setInfoAdmin()
                     setOnClickForViews()
+                    updateTheCurrentInFirebase()
                 } else {
                     dialogA.show(
                         "Thông báo",
@@ -100,6 +101,16 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
                 }
 
             })
+    }
+
+    private fun updateTheCurrentInFirebase() {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["tempDate"] = System.currentTimeMillis().toString()
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
+        }
     }
 
     private fun addToInComeDatabase(value: String, userName: String, userMoney: String) {

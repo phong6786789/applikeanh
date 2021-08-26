@@ -112,7 +112,7 @@ class RegisterFragment : Fragment() {
                                                             "true",
                                                             "0",
                                                             "0",
-                                                            "0", ""
+                                                            "0", "", ""
                                                         )
                                                         database.child(uid).setValue(user)
                                                             .addOnCompleteListener {

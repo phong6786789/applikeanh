@@ -139,7 +139,11 @@
     <fragment
         android:id="@+id/napCofirmFragment"
         android:name="com.subi.likeanh.money.nap.NapConfirmFragment"
-        android:label="NapCofirmFragment"/>
+        android:label="NapCofirmFragment">
+        <argument
+            android:name="userPackage"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/rut2Fragment"
         android:name="com.subi.likeanh.money.ruta.Rut2Fragment"

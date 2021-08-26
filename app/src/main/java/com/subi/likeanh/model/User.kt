@@ -19,7 +19,8 @@ data class User(
     val currentDate: String,
     val totalLike: String,
     val index: String,
-    val tempDate: String
+    val tempDate: String,
+    val timeAvailableForUserPackage: String
 ) {
     constructor() : this(
         "",
@@ -40,6 +41,6 @@ data class User(
         "",
         "",
         "0",
-        ""
+        "", ""
     )
 }

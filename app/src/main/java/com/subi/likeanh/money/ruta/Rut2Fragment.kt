@@ -131,7 +131,7 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
     }
 
     //Check hạn rúttiền
-    fun checkTheAvailableTime(userPackage: Int, currentTime: Long, moneyDeposit: String) {
+    private fun checkTheAvailableTime(userPackage: Int, currentTime: Long, moneyDeposit: String) {
         when (userPackage) {
             1 -> {
                 val availableTime = System.currentTimeMillis() - currentTime
@@ -354,7 +354,6 @@ class Rut2Fragment : Fragment(), View.OnClickListener {
                     val user = snapshot.getValue(User::class.java)
                     user?.let { addToInComeDatabase(it, tienRut) }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                 }
 

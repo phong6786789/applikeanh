@@ -34,7 +34,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
     private lateinit var binding: FragmentNapBinding
     private val viewModel: NapViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
-    var pos = 0
+    private var pos: Int = 0
     private val ref =
         FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
     private lateinit var loading: LoadingDialog
@@ -110,8 +110,10 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
 //        }.addOnFailureListener {
 //            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
 //        }
-        val bundle = bundleOf("package" to pos)
+        pos = binding.tvTengoi.text.toString().toInt()
+        val bundle = bundleOf("userPackage" to pos)
         findNavController().navigate(R.id.action_napFragment_to_napCofirmFragment, bundle)
+
     }
 
     private fun checkForSpinner() {

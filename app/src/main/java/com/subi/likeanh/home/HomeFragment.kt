@@ -124,16 +124,6 @@ class HomeFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun updateTheCurrentInFirebaseB() {
-        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
-        userNameHashMap["currentDate"] = convertTimeDay(System.currentTimeMillis())
-        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
-
-        }.addOnFailureListener {
-            Log.d("kienda", "updateTheUserPackage: + ${it.message}")
-        }
-    }
-
     private fun checkToUpdateTheIsLikeInFirebase() {
         Log.d(TAG, "checkToUpdateTheIsLikeInFirebase: ")
         if (user != null) {
@@ -142,16 +132,12 @@ class HomeFragment : Fragment(), OnItemClick {
                     val user = snapshot.getValue(User::class.java)
                     if (user?.currentDate != convertTimeDay(System.currentTimeMillis())) {
                         checkToUpdateCurrentDateInFirebase(user!!)
-                        updateTheCurrentInFirebaseB()
                     }
-
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.d(TAG, "onDataChange: B")
                 }
-
             })
         }
     }
@@ -161,6 +147,7 @@ class HomeFragment : Fragment(), OnItemClick {
             updateTheCurrentInFirebase()
             return
         }
+        updateUserPackageTo0()
         dialog.show(
             "Gói của bạn đã hết hạn",
             "Bạn cần nạp tiền để thêm gói mới để có thể tiếp tục like"
@@ -168,8 +155,21 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
 
+    private fun updateUserPackageTo0() {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["userPackage"] = "0"
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+        }.addOnFailureListener {
+
+        }
+    }
+
+
     private fun checkToUpdateCurrentDateInFirebase(user: User) {
         when (user.userPackage.toInt()) {
+            0 -> {
+
+            }
             1 -> {
                 val timeExpireDate = user.tempDate.toLong() + 3 * 86400
                 checkUpdateDate(user.tempDate.toLong(), timeExpireDate)

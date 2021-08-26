@@ -67,17 +67,18 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
         rutNapDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //Có thể rút và nạp nếu status true
-                if (snapshot.child("status").getValue(Boolean::class.java) == true) {
-                    checkForSetDataToUserFragment()
-                    setInfoAdmin()
-                    setOnClickForViews()
-                } else {
-                    dialogA.show(
-                        "Thông báo",
-                        "Bạn đã có yêu cầu nạp, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!"
-                    )
-                    requireActivity().onBackPressed()
-                }
+                checkForSetDataToUserFragment()
+                setInfoAdmin()
+                setOnClickForViews()
+//                if (snapshot.child("status").getValue(Boolean::class.java) == true) {
+//
+//                } else {
+//                    dialogA.show(
+//                        "Thông báo",
+//                        "Bạn đã có yêu cầu nạp, vui lòng đợi xử lý trước khi tiếp tục thực hiện giao dịch mới!"
+//                    )
+//                    requireActivity().onBackPressed()
+//                }
             }
 
             override fun onCancelled(error: DatabaseError) {

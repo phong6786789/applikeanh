@@ -6,18 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
-import com.subi.likeanh.databinding.FragmentHomeBinding
 import com.subi.likeanh.databinding.FragmentMoneyBinding
-import com.subi.likeanh.home.HomeViewModel
+import com.subi.likeanh.model.Admin
+import android.content.Intent
+import android.net.Uri
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.StorageReference
+import com.subi.likeanh.model.ImageData
+import com.google.common.io.Files.getFileExtension
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.FirebaseStorage
+import com.google.android.gms.tasks.OnSuccessListener
+
 
 class MoneyFragment : Fragment() {
     private lateinit var binding: FragmentMoneyBinding
     private val viewModel: MoneyViewModel by viewModels()
+    private val adminDatabase = FirebaseDatabase.getInstance().getReference("admin")
+    private val imageDatabase = FirebaseDatabase.getInstance().getReference("image")
+    private val mStorageRef = FirebaseStorage.getInstance().getReference("image/background.png");
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,14 +61,42 @@ class MoneyFragment : Fragment() {
             layoutMagt.setOnClickListener {
 
             }
+            imgContact.setOnClickListener {
+                makeThePhoneCallToTheAdmin()
+            }
         }
+        setImageForImageView()
 
         return binding.root;
     }
 
+    private fun setImageForImageView() {
+        mStorageRef.downloadUrl.addOnSuccessListener {
+            Glide.with(requireActivity()).load(it).into(binding.imgCenter)
+        }
+    }
+
+    private fun makeThePhoneCallToTheAdmin() {
+        adminDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val admin = snapshot.getValue(Admin::class.java)
+                val phone = admin?.sdt
+                val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+                startActivity(intent)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+
     fun init() {
         binding.setVariable(BR.viewModel, viewModel)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =  View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            View.VISIBLE
         viewModel.load()
     }
 }

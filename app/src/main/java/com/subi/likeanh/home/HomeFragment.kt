@@ -124,6 +124,16 @@ class HomeFragment : Fragment(), OnItemClick {
         }
     }
 
+    private fun updateTheCurrentInFirebaseB() {
+        var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
+        userNameHashMap["currentDate"] = convertTimeDay(System.currentTimeMillis())
+        userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
+
+        }.addOnFailureListener {
+
+        }
+    }
+
     private fun checkToUpdateTheIsLikeInFirebase() {
         Log.d(TAG, "checkToUpdateTheIsLikeInFirebase: ")
         if (user != null) {
@@ -132,6 +142,7 @@ class HomeFragment : Fragment(), OnItemClick {
                     val user = snapshot.getValue(User::class.java)
                     if (user?.currentDate != convertTimeDay(System.currentTimeMillis())) {
                         checkToUpdateCurrentDateInFirebase(user!!)
+                        updateTheCurrentInFirebaseB()
                     }
                 }
 

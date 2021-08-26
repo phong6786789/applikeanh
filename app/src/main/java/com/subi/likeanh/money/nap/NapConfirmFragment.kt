@@ -2,7 +2,6 @@ package com.subi.likeanh.money.nap
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -113,7 +111,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
             })
     }
 
-    private fun updateTheCurrentInFirebase() {
+    private fun updateTheTempDateInFirebase() {
         var userNameHashMap: HashMap<String, String> = HashMap<String, String>()
         userNameHashMap["tempDate"] = System.currentTimeMillis().toString()
         userDatabase.updateChildren(userNameHashMap as Map<String, Any>).addOnSuccessListener {
@@ -205,7 +203,7 @@ class NapConfirmFragment : Fragment(), View.OnClickListener {
                 override fun onClick() {
                     checkForUserInFormation()
                     updateDataForUser()
-                    updateTheCurrentInFirebase()
+                    updateTheTempDateInFirebase()
                     dialog?.dismiss()
                 }
             })

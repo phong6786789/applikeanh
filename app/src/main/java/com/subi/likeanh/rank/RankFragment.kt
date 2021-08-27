@@ -79,6 +79,8 @@ class RankFragment : Fragment() {
                         it.totalMoney.toLong()
                     }
 
+                    Log.d(TAG, "onDataChange: ${list.size}")
+
                     when (list.size) {
                         1 -> {
                             binding.tvTop1.text = list[0].name
@@ -86,35 +88,40 @@ class RankFragment : Fragment() {
                             binding.moneyTop1.text = Utils.getFMoney(list[0].totalMoney)
                         }
                         2 -> {
-                            binding.tvTop1.text =  Utils.getFMoney(list[0].name)
+                            binding.tvTop1.text = Utils.getFMoney(list[0].name)
                             binding.tvTop2.text = Utils.getFMoney(list[1].name)
 
-                            binding.moneyTop1.text =  Utils.getFMoney(list[0].totalMoney)
-                            binding.moneyTop2.text =  Utils.getFMoney(list[1].totalMoney)
+                            binding.moneyTop1.text = Utils.getFMoney(list[0].totalMoney)
+                            binding.moneyTop2.text = Utils.getFMoney(list[1].totalMoney)
 
                         }
-                        3 -> {
+                        else -> {
                             binding.tvTop1.text = list[0].name
                             binding.tvTop2.text = list[1].name
                             binding.tvTop3.text = list[2].name
 
-                            binding.moneyTop1.text =  Utils.getFMoney(list[0].totalMoney)
-                            binding.moneyTop2.text =  Utils.getFMoney(list[1].totalMoney)
-                            binding.moneyTop3.text =  Utils.getFMoney(list[2].totalMoney)
+                            binding.moneyTop1.text = Utils.getFMoney(list[0].totalMoney)
+                            binding.moneyTop2.text = Utils.getFMoney(list[1].totalMoney)
+                            binding.moneyTop3.text = Utils.getFMoney(list[2].totalMoney)
                         }
                     }
 
                     if (list.size >= 3) {
                         list.removeAt(0)
-                        list.removeAt(0)
-                        list.removeAt(0)
+                        list.removeAt(1)
+                        list.removeAt(2)
                     }
+
                     rankAdapter = RankAdapter(list)
                     binding.apply {
                         rcv.apply {
                             adapter = rankAdapter
                             layoutManager =
-                                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
                             hasFixedSize()
                             scheduleLayoutAnimation()
                         }

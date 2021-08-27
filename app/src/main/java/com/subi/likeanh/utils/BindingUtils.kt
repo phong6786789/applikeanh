@@ -85,10 +85,10 @@ object BindingUtils {
         Log.d("test", money.toString())
         try {
             if (money == "0" || money == "null") {
-                textView.text = "0 VNĐ"
+                textView.text = "Số tiền hiện tại của bạn là: 0 VNĐ"
             } else {
                 val fm = DecimalFormat("#,###")
-                textView.text = "${fm.format(money?.toLong())} VNĐ"
+                textView.text = "Số tiền hiện tại của bạn là ${fm.format(money?.toLong())} VNĐ"
             }
         } catch (e: Exception) {
 
@@ -101,9 +101,9 @@ object BindingUtils {
     fun setGoi(textView: TextView, goi: String?) {
         try {
             if (goi == "0" || goi == "null") {
-                textView.text = "Gói 0"
+                textView.text = "Gói của bạn đang dùng là 0"
             } else {
-                textView.text = "Gói $goi"
+                textView.text = "Gói của bạn đang dùng là $goi"
             }
         } catch (e: Exception) {
         }

@@ -100,6 +100,9 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_userFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/lichSuFragment"

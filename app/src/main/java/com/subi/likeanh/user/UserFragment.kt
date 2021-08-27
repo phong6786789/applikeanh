@@ -31,7 +31,7 @@ class UserFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentUserBinding
     private val viewModel: UserViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
-
+    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +47,7 @@ class UserFragment : Fragment(), View.OnClickListener {
 
     private fun setOnClickForViews() {
         binding.tvMoveToScreenUpdatesUser.setOnClickListener(this)
+        binding.tvLogOut.setOnClickListener(this)
     }
 
     private fun checkForSetDataToUserFragment() {
@@ -81,7 +82,15 @@ class UserFragment : Fragment(), View.OnClickListener {
             R.id.tvMoveToScreenUpdatesUser -> {
                 startToAnotherScreen()
             }
+            R.id.tvLogOut -> {
+                logOutOfTheUser()
+            }
         }
+    }
+
+    private fun logOutOfTheUser() {
+        auth.signOut()
+        findNavController().navigate(R.id.loginFragment)
     }
 
     private fun startToAnotherScreen() {

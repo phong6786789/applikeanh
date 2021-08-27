@@ -24,11 +24,11 @@
 
 
         <LinearLayout
-            android:layout_margin="16dp"
             android:id="@+id/llA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/imgA"
+            android:layout_margin="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -47,12 +47,12 @@
                 android:text="Họ Và Tên" />
 
             <TextView
-                android:textAllCaps="true"
                 android:id="@+id/tvUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@{viewModel.user.name}"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -63,12 +63,12 @@
                 android:text="Tên ngâng hàng" />
 
             <TextView
-                android:textAllCaps="true"
                 android:id="@+id/tvUserAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@{viewModel.user.bank}"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -104,16 +104,28 @@
 
 
             <Button
-                android:elevation="10dp"
-                android:textColor="@color/white"
                 android:id="@+id/tvMoveToScreenUpdatesUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button"
+                android:elevation="10dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Cập nhật thông tin tài khoản" />
+                android:text="Cập nhật thông tin tài khoản"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/tvLogOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Đăng Xuất"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

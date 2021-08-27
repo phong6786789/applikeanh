@@ -58,12 +58,13 @@ object BindingUtils {
     @JvmStatic
     fun incomeType(tv: TextView, history: NapRut) {
         val fm = DecimalFormat("#,###")
+        val money = history.money.replace(",", "").replace(" đồng", "").trim()
         if (!history.isRut) {
-            tv.text = "Bạn đã nạp + ${fm.format(history?.money.toLong())} VNĐ"
+            tv.text = "Bạn đã nạp + $money VNĐ"
             tv.setTextColor(R.color.nap)
             return
         }
-        tv.text = "Bạn đã rút - ${fm.format(history?.money.toLong())} VNĐ"
+        tv.text = "Bạn đã rút - $money VNĐ"
         tv.setTextColor(R.color.rut)
 
     }

@@ -14,120 +14,130 @@
         android:layout_height="match_parent"
         tools:context=".user.UserFragment">
 
-        <ImageView
-            android:id="@+id/imgA"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentEnd="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg_snow_a" />
+            android:layout_height="match_parent">
 
-
-        <LinearLayout
-            android:id="@+id/llA"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/imgA"
-            android:layout_margin="16dp"
-            android:orientation="vertical">
-
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="THÔNG TIN CÁ NHÂN "
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Họ Và Tên" />
-
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@{viewModel.user.name}"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Tên ngâng hàng" />
-
-            <TextView
-                android:id="@+id/tvUserAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@{viewModel.user.bank}"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Số Tài Khoản Ngân Hàng" />
-
-            <TextView
-                android:id="@+id/tvUserBank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@{viewModel.user.stk}"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Số Điện Thoại" />
-
-            <TextView
-                android:id="@+id/tvUserPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@{viewModel.user.phone}"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imgA"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_snow_a" />
 
 
-            <Button
-                android:id="@+id/tvMoveToScreenUpdatesUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Cập nhật thông tin tài khoản"
-                android:textColor="@color/white" />
+                <LinearLayout
+                    android:id="@+id/llA"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/imgA"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
 
-            <Button
-                android:id="@+id/tvLogOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Đăng Xuất"
-                android:textColor="@color/white" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="THÔNG TIN CÁ NHÂN "
+                        android:textColor="@color/black"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Họ Và Tên" />
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{viewModel.user.name}"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Tên ngâng hàng" />
+
+                    <TextView
+                        android:id="@+id/tvUserAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{viewModel.user.bank}"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Số Tài Khoản Ngân Hàng" />
+
+                    <TextView
+                        android:id="@+id/tvUserBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{viewModel.user.stk}"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Số Điện Thoại" />
+
+                    <TextView
+                        android:id="@+id/tvUserPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{viewModel.user.phone}"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+
+                    <Button
+                        android:id="@+id/tvMoveToScreenUpdatesUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button"
+                        android:elevation="10dp"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Cập nhật thông tin tài khoản"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/tvLogOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button"
+                        android:elevation="10dp"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Đăng Xuất"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
 
 
     </RelativeLayout>

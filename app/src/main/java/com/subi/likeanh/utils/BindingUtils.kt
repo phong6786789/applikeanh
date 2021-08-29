@@ -9,8 +9,12 @@ import com.bumptech.glide.Glide
 import com.subi.likeanh.R
 import com.subi.likeanh.model.History
 import com.subi.likeanh.model.NapRut
+import com.subi.likeanh.model.User
 import java.lang.Exception
 import java.text.DecimalFormat
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.util.*
 
 object BindingUtils {
     @BindingAdapter("setImageResource")
@@ -69,6 +73,20 @@ object BindingUtils {
 
     }
 
+    @SuppressLint("ResourceAsColor")
+    @BindingAdapter("setTextForIncomeTypeB")
+    @JvmStatic
+    fun incomeTypeB(tv: TextView, history: NapRut) {
+        tv.text = convertTime(history.time.toLong())
+
+    }
+
+    private fun convertTime(time: Long): String {
+        val date = Date(time)
+        val format: Format = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
+        return format.format(date)
+    }
+
 
     @BindingAdapter("isLove")
     @JvmStatic
@@ -108,6 +126,13 @@ object BindingUtils {
             }
         } catch (e: Exception) {
         }
+    }
+
+
+    @BindingAdapter("setNameForGoiA")
+    @JvmStatic
+    fun setGoiB(tv: TextView, user: User) {
+        tv.text = "Dưới đây là cấp dưới của bạn ${user.name}"
     }
 
     @BindingAdapter("setGT")

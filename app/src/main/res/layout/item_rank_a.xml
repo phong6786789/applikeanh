@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="income"
-            type="com.subi.likeanh.model.NapRut" />
+            name="user"
+            type="com.subi.likeanh.model.User" />
     </data>
 
     <RelativeLayout
@@ -32,34 +32,45 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        setImageForIncomeType="@{income}"
                         android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_height="100dp"
                         android:layout_marginStart="10dp"
-                        android:padding="20dp"
-                        android:src="@drawable/ic_plus" />
+                        android:padding="5dp"
+                        android:src="@drawable/ic_account" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_marginStart="20dp"
                     android:orientation="vertical">
 
                     <TextView
-                        setTextForIncomeType="@{income}"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="7dp"
+                        android:text="@{user.name}"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black" />
 
                     <TextView
-                        setTextForIncomeTypeB="@{income}"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="7dp"
+                        android:text="@{user.phone}"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        setMoney="@{user.totalMoney}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

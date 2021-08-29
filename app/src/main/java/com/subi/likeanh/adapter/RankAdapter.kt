@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.subi.likeanh.BR
+import com.subi.likeanh.callback.OnItemClick
+import com.subi.likeanh.callback.OnItemUserClick
 import com.subi.likeanh.databinding.ItemLichSuGiaoDichBinding
 import com.subi.likeanh.databinding.ItemRankBinding
 import com.subi.likeanh.databinding.ItemThuNhapBinding
@@ -14,7 +16,7 @@ import com.subi.likeanh.model.User
 
 
 class RankAdapter(
-    var items: List<User>
+    var items: List<User>, private val onItemClick: OnItemUserClick
 ) : RecyclerView.Adapter<RankAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -28,6 +30,9 @@ class RankAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binData(items[position], position)
+        holder.itemView.setOnClickListener {
+            onItemClick.onShortClick(position, items[position])
+        }
     }
 
     inner class ViewHolder(var binding: ItemRankBinding) :

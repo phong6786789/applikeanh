@@ -88,7 +88,11 @@
     <fragment
         android:id="@+id/rankFragment"
         android:name="com.subi.likeanh.rank.RankFragment"
-        android:label="RankFragment" />
+        android:label="RankFragment" >
+        <action
+            android:id="@+id/action_rankFragment_to_rankDetailFragment"
+            app:destination="@id/rankDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userFragment"
         android:name="com.subi.likeanh.user.UserFragment"
@@ -155,4 +159,8 @@
         android:id="@+id/mainActivity"
         android:name="com.subi.likeanh.MainActivity"
         android:label="MainActivity" />
+    <fragment
+        android:id="@+id/rankDetailFragment"
+        android:name="com.subi.likeanh.rank.RankDetailFragment"
+        android:label="RankDetailFragment" />
 </navigation>

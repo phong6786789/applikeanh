@@ -1,5 +1,9 @@
 package com.subi.likeanh.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class User(
     var uid: String,
     var phone: String,
@@ -21,7 +25,7 @@ data class User(
     val index: String,
     val tempDate: String,
     val timeAvailableForUserPackage: String
-) {
+) : Parcelable {
     constructor() : this(
         "",
         "",

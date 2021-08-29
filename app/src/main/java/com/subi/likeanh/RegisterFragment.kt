@@ -25,7 +25,8 @@ import com.subi.likeanh.utils.Utils
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegBinding
     private var auth = FirebaseAuth.getInstance()
-    private var database = FirebaseDatabase.getInstance().getReference("user")
+    private var userDatabase = FirebaseDatabase.getInstance().getReference("user")
+    private var phoneDatabase = FirebaseDatabase.getInstance().getReference("sdtGT")
     private lateinit var loading: LoadingDialog
     private lateinit var dialog: ShowDialog.Builder
 
@@ -55,9 +56,10 @@ class RegisterFragment : Fragment() {
                 val sdtx = edtPhone.text.toString()
                 val pass1 = edtMkDK.text.toString()
                 val pass2 = edtMkDK2.text.toString()
+                val maGioiThieu = binding.edtMagt.text.toString()
 
                 if (hotenx.isNotEmpty() && sdtx.isNotEmpty() && pass1.isNotEmpty() && pass2.isNotEmpty() && edtCaptcha.text.toString()
-                        .isNotEmpty()
+                        .isNotEmpty() && maGioiThieu.isNotEmpty()
                 ) {
                     if (hotenx.length < 6) {
                         loading.dismiss()
@@ -70,82 +72,119 @@ class RegisterFragment : Fragment() {
                         loading.dismiss()
                         dialog.show("Thông báo", "Mật khẩu không khớp nhau!")
                     } else {
-
                         if (edtCaptcha.text.toString().toInt() != rd) {
                             loading.dismiss()
                             dialog.show("Thất bại!", "Mã xác nhập không chính xác")
                         } else {
-                            database.orderByChild("idPhone")
-                                .equalTo(androidID)
-                                .addListenerForSingleValueEvent(object :
-                                    ValueEventListener {
-                                    override fun onDataChange(snapshot: DataSnapshot) {
-                                        if (snapshot.exists()) {
-                                            loading.dismiss()
-                                            dialog.show(
-                                                "Thất bại!",
-                                                "Điện thoại này đã đăng ký một tài khoản trước đó!"
-                                            )
-                                        } else {
-                                            auth.createUserWithEmailAndPassword(
-                                                "$sdtx@gmail.com",
-                                                pass1
-                                            )
-                                                .addOnCompleteListener {
-                                                    if (it.isSuccessful) {
-                                                        val uid = it.result?.user?.uid.toString()
-                                                        val user = User(
-                                                            uid,
-                                                            sdtx,
-                                                            hotenx,
-                                                            "",
-                                                            true,
-                                                            "",
-                                                            "0",
-                                                            edtMagt.text.toString(),
-                                                            androidID,
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "0",
-                                                            "true",
-                                                            "0",
-                                                            "0",
-                                                            "0", "", ""
-                                                        )
-                                                        database.child(uid).setValue(user)
-                                                            .addOnCompleteListener {
-                                                                dialog.show(
-                                                                    "Chúc mừng!",
-                                                                    "Đăng ký thành công!"
-                                                                )
-                                                                val rn =
-                                                                    FirebaseDatabase.getInstance()
-                                                                        .getReference("rutnap")
-                                                                rn.child(Utils.getUID() + "nap")
-                                                                    .child("status").setValue(true)
-                                                                rn.child(Utils.getUID() + "rut")
-                                                                    .child("status").setValue(true)
-                                                                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                                                                loading.dismiss()
-                                                            }
+                            userDatabase.addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    var isSuccess = false
+                                    for (value in snapshot.children) {
+                                        val currentUser = value.getValue(User::class.java)
+                                        if (currentUser!!.phone == maGioiThieu) {
+                                            isSuccess = true
+                                            userDatabase.orderByChild("idPhone")
+                                                .equalTo(androidID)
+                                                .addListenerForSingleValueEvent(object :
+                                                    ValueEventListener {
+                                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                                        if (snapshot.exists()) {
+                                                            loading.dismiss()
+                                                            dialog.show(
+                                                                "Thất bại!",
+                                                                "Điện thoại này đã đăng ký một tài khoản trước đó!"
+                                                            )
+                                                        } else {
+                                                            auth.createUserWithEmailAndPassword(
+                                                                "$sdtx@gmail.com",
+                                                                pass1
+                                                            )
+                                                                .addOnCompleteListener {
+                                                                    if (it.isSuccessful) {
+                                                                        val uid =
+                                                                            it.result?.user?.uid.toString()
+                                                                        val user = User(
+                                                                            uid,
+                                                                            sdtx,
+                                                                            hotenx,
+                                                                            "",
+                                                                            true,
+                                                                            "",
+                                                                            "0",
+                                                                            edtMagt.text.toString(),
+                                                                            androidID,
+                                                                            "0",
+                                                                            "0",
+                                                                            "0",
+                                                                            "0",
+                                                                            "0",
+                                                                            "true",
+                                                                            "0",
+                                                                            "0",
+                                                                            "0", "", ""
+                                                                        )
+                                                                        userDatabase.child(uid)
+                                                                            .setValue(user)
+                                                                            .addOnCompleteListener {
+                                                                                dialog.show(
+                                                                                    "Chúc mừng!",
+                                                                                    "Đăng ký thành công!"
+                                                                                )
+                                                                                val rn =
+                                                                                    FirebaseDatabase.getInstance()
+                                                                                        .getReference(
+                                                                                            "rutnap"
+                                                                                        )
+                                                                                rn.child(Utils.getUID() + "nap")
+                                                                                    .child("status")
+                                                                                    .setValue(true)
+                                                                                rn.child(Utils.getUID() + "rut")
+                                                                                    .child("status")
+                                                                                    .setValue(true)
+                                                                                findNavController().navigate(
+                                                                                    R.id.action_registerFragment_to_homeFragment
+                                                                                )
+                                                                                phoneDatabase.child(
+                                                                                    sdtx
+                                                                                ).child("test")
+                                                                                    .setValue("empty")
+                                                                                phoneDatabase.child(
+                                                                                    sdtx
+                                                                                ).setValue(sdtx)
+                                                                                loading.dismiss()
+                                                                            }
 
-                                                    } else {
-                                                        dialog.show(
-                                                            "Thất bại!",
-                                                            "Tài khoản đã tồn tại!"
-                                                        )
-                                                        loading.dismiss()
+                                                                    } else {
+                                                                        dialog.show(
+                                                                            "Thất bại!",
+                                                                            "Tài khoản đã tồn tại!"
+                                                                        )
+                                                                        loading.dismiss()
+                                                                    }
+                                                                }
+                                                        }
                                                     }
-                                                }
+
+                                                    override fun onCancelled(error: DatabaseError) {
+
+                                                    }
+                                                })
+                                            return
                                         }
                                     }
-
-                                    override fun onCancelled(error: DatabaseError) {
-
+                                    if (!isSuccess) {
+                                        dialog.show("Đăng kí thất bại", "Mã giới thiệu k hợp lệ")
                                     }
-                                })
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+
+                                }
+
+                            })
+
+
                         }
                     }
                 } else {
@@ -158,6 +197,31 @@ class RegisterFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    private fun checkToUpdateThePhoneDatabase(maGioiThieu: String, sdtx: String) {
+        userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var isSuccess = false
+                for (value in snapshot.children) {
+                    val currentUser = value.getValue(User::class.java)
+                    if (currentUser!!.phone == maGioiThieu) {
+                        phoneDatabase.child(sdtx).child("test").setValue("empty")
+                        phoneDatabase.child(sdtx).setValue(sdtx)
+                        isSuccess = true
+                        return
+                    }
+                }
+                if (!isSuccess) {
+                    dialog.show("Đăng kí thất bại", "Mã giới thiệu k hợp lệ")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
     }
 
     fun init() {

@@ -2,11 +2,11 @@ package com.subi.likeanh.rank
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +20,6 @@ import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.adapter.RankAdapter
 import com.subi.likeanh.callback.OnItemUserClick
-
 import com.subi.likeanh.databinding.FragmentRankBinding
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
@@ -52,10 +51,115 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         binding = FragmentRankBinding.inflate(inflater, container, false)
         init()
         initRecyclerView()
-        initDataForRecyclerViewCap1()
+//        initDataForRecyclerViewCap1()
         setOnClickForViews()
+        getUser()
         return binding.root;
     }
+
+    private fun getUser() {
+        if (user != null) {
+            val ref =
+                FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(User::class.java)
+                    //Get List
+                    if (user != null) {
+                        loadAllData(user)
+                        Log.d(TAG, "getUser: $user")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+        }
+    }
+
+    private fun loadAllData(user: User) {
+        listCap1.clear()
+        //Get all list from phone number
+        val phone = user.phone
+        phoneDatabase.child(phone).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (phone in snapshot.children) {
+                    Log.d(TAG, "phone: ${phone.value}")
+                    //Get user from phone
+                    userDatabase.orderByChild("phone").equalTo(phone.value.toString())
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                snapshot.children.forEach{
+                                    val user = it.getValue(User::class.java)
+                                    //Get List
+                                        if (user != null) {
+                                            listCap1.add(user)
+                                            rankAdapterCap1?.setNewData(listCap1)
+                                            Log.d(TAG, "user list 1: $user")
+                                        }
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+
+                        })
+                }
+                Log.d(TAG, "allList 1: ${listCap1.size}")
+
+                //Lấy data list 2
+                for (x in listCap1){
+                    val phone = x.phone
+                    Log.d(TAG, "phone 2: $phone")
+                    //Get user from phone
+                        userDatabase.orderByChild("phone").equalTo(phone)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    snapshot.children.forEach{
+                                        val user = it.getValue(User::class.java)
+                                        //Get List
+                                        if (user != null) {
+                                            listCap2.add(user)
+                                            rankAdapterCap2?.setNewData(listCap2)
+                                            Log.d(TAG, "user list 2: $user")
+                                        }
+                                    }
+                                }
+                                override fun onCancelled(error: DatabaseError) {
+                                }
+
+                            })
+                }
+                //Lấy data list 2
+                for (x in listCap2){
+                    val phone = x.phone
+                    //Get user from phone
+                    userDatabase.orderByChild("phone").equalTo(phone)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                snapshot.children.forEach{
+                                    val user = it.getValue(User::class.java)
+                                    //Get List
+                                    if (user != null) {
+                                        listCap3.add(user)
+                                        rankAdapterCap3?.setNewData(listCap3)
+                                        Log.d(TAG, "user list 3: $user")
+                                    }
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+    }
+
 
     private fun setOnClickForViews() {
         binding.tvCap1.setOnClickListener(this)
@@ -120,10 +224,7 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
                     override fun onCancelled(error: DatabaseError) {
 
                     }
-
                 })
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -143,8 +244,7 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         binding.setVariable(BR.viewModel, viewModel)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
             View.VISIBLE
-        binding.tvCap2.setBackgroundColor(resources.getColor(R.color.white))
-        binding.tvCap3.setBackgroundColor(resources.getColor(R.color.white))
+        showCap1()
     }
 
     override fun onShortClick(position: Int, user: User) {
@@ -171,6 +271,10 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         binding.tvCap2.setBackgroundColor(resources.getColor(R.color.white))
         binding.tvCap3.setBackgroundColor(resources.getColor(R.color.white))
 
+        binding.tvCap1.setTextColor(resources.getColor(R.color.white))
+        binding.tvCap2.setTextColor(resources.getColor(R.color.black))
+        binding.tvCap3.setTextColor(resources.getColor(R.color.black))
+
         binding.rcvRankCap1.visibility = View.VISIBLE
         binding.rcvRankCap2.visibility = View.GONE
         binding.rcvRankCap3.visibility = View.GONE
@@ -180,6 +284,10 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         binding.tvCap1.setBackgroundColor(resources.getColor(R.color.white))
         binding.tvCap2.background = resources.getDrawable(R.drawable.border_button_b)
         binding.tvCap3.setBackgroundColor(resources.getColor(R.color.white))
+
+        binding.tvCap1.setTextColor(resources.getColor(R.color.black))
+        binding.tvCap2.setTextColor(resources.getColor(R.color.white))
+        binding.tvCap3.setTextColor(resources.getColor(R.color.black))
 
         binding.rcvRankCap1.visibility = View.GONE
         binding.rcvRankCap2.visibility = View.VISIBLE
@@ -191,6 +299,9 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         binding.tvCap2.setBackgroundColor(resources.getColor(R.color.white))
         binding.tvCap3.background = resources.getDrawable(R.drawable.border_button_b)
 
+        binding.tvCap1.setTextColor(resources.getColor(R.color.black))
+        binding.tvCap2.setTextColor(resources.getColor(R.color.black))
+        binding.tvCap3.setTextColor(resources.getColor(R.color.white))
 
         binding.rcvRankCap1.visibility = View.GONE
         binding.rcvRankCap2.visibility = View.GONE

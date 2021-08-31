@@ -129,7 +129,6 @@ class RankDetailFragment : Fragment(), OnItemUserClick {
     }
 
     override fun onShortClick(position: Int, user: User) {
-        TODO("Not yet implemented")
     }
 
 

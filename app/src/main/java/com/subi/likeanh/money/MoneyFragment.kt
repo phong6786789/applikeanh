@@ -1,30 +1,26 @@
 package com.subi.likeanh.money
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.UiThread
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.subi.likeanh.BR
 import com.subi.likeanh.R
 import com.subi.likeanh.databinding.FragmentMoneyBinding
 import com.subi.likeanh.model.Admin
-import android.content.Intent
-import android.net.Uri
-import com.bumptech.glide.Glide
-import com.google.firebase.storage.StorageReference
-import com.subi.likeanh.model.ImageData
-import com.google.common.io.Files.getFileExtension
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.FirebaseStorage
-import com.google.android.gms.tasks.OnSuccessListener
 
 
 class MoneyFragment : Fragment() {
@@ -69,10 +65,13 @@ class MoneyFragment : Fragment() {
 
         return binding.root;
     }
-
+    @UiThread
     private fun setImageForImageView() {
-        mStorageRef.downloadUrl.addOnSuccessListener {
-            Glide.with(requireActivity()).load(it).into(binding.imgCenter)
+        try {
+            mStorageRef.downloadUrl.addOnSuccessListener {
+                Glide.with(requireActivity()).load(it).into(binding.imgCenter)
+            }
+        } catch (e: Exception) {
         }
     }
 

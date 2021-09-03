@@ -6,28 +6,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.subi.likeanh.BR
 import com.subi.likeanh.R
-import com.subi.likeanh.adapter.RankAdapter
-import com.subi.likeanh.callback.OnItemUserClick
+import com.subi.likeanh.adapter.RankXAdapter
 import com.subi.likeanh.databinding.FragmentRankBinding
+import com.subi.likeanh.databinding.FragmentRankxBinding
 import com.subi.likeanh.model.User
 import com.subi.likeanh.utils.LoadingDialog
 import com.subi.nails2022.view.ShowDialog
 
-class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
-    private lateinit var binding: FragmentRankBinding
+class RankXFragment : Fragment() {
+    private lateinit var binding: FragmentRankxBinding
     private val viewModel: RankViewModel by viewModels()
     private var user = FirebaseAuth.getInstance().currentUser
     private lateinit var dialog: ShowDialog.Builder
@@ -39,23 +35,36 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
     private var listCap1 = arrayListOf<User>()
     private var listCap2 = arrayListOf<User>()
     private var listCap3 = arrayListOf<User>()
-    private var rankAdapterCap1: RankAdapter? = null
-    private var rankAdapterCap2: RankAdapter? = null
-    private var rankAdapterCap3: RankAdapter? = null
-
-
+    val TAG = "phongsubi"
+    private var rankAdapter:RankXAdapter?=null
+    private var rankAdapter2:RankXAdapter?=null
+    private var rankAdapter3:RankXAdapter?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentRankBinding.inflate(inflater, container, false)
+        binding = FragmentRankxBinding.inflate(inflater, container, false)
+        showCap1()
         init()
-        initRecyclerView()
-//        initDataForRecyclerViewCap1()
-        setOnClickForViews()
         getUser()
         return binding.root;
+    }
+
+    private fun init(){
+        binding.apply {
+            tvCap1.setOnClickListener {
+                showCap1()
+            }
+
+            tvCap2.setOnClickListener {
+                showCap2()
+            }
+
+            tvCap3.setOnClickListener {
+                showCap3()
+            }
+        }
     }
 
     private fun getUser() {
@@ -80,8 +89,7 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
     }
 
     private fun loadAllData(user: User) {
-        listCap1.clear()
-        //Get all list from phone number
+//Get all list from phone number
         val phone = user.phone
         phoneDatabase.child(phone).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -91,21 +99,23 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
                     userDatabase.orderByChild("phone").equalTo(phone.value.toString())
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
+                                listCap1.clear()
                                 snapshot.children.forEach{
                                     val user = it.getValue(User::class.java)
                                     //Get List
                                         if (user != null) {
                                             listCap1.add(user)
-                                            Log.d(TAG, "user list 1: $user")
                                         }
-
                                 }
-                                rankAdapterCap1 = RankAdapter(listCap1, this@RankFragment)
-                                rankAdapterCap1?.notifyDataSetChanged()
 
-
+                                binding.rcvRankCap1.apply {
+                                    rankAdapter = RankXAdapter(listCap1)
+                                    adapter = rankAdapter
+                                    layoutManager =
+                                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                    hasFixedSize()
+                                }
                                 Log.d(TAG, "allList 1: ${listCap1.size}")
-
                                 for (x in listCap1){
                                     val phone = x.phone
                                     Log.d(TAG, "phone 2: $phone")
@@ -122,8 +132,14 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
                                                     }
                                                 }
                                                 Log.d(TAG, "user list 2: ${listCap2.size}")
-                                                rankAdapterCap1 = RankAdapter(listCap2, this@RankFragment)
-                                                rankAdapterCap1?.notifyDataSetChanged()
+                                                binding.rcvRankCap2.apply {
+                                                    adapter = RankXAdapter(listCap2)
+                                                    layoutManager =
+                                                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                                    hasFixedSize()
+                                                }
+                                                Log.d(TAG, "allList 2: ${listCap2.size}")
+
 
                                                 for (x in listCap2){
                                                     val phone = x.phone
@@ -139,8 +155,15 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
                                                                         Log.d(TAG, "user list 3: $user")
                                                                     }
                                                                 }
-                                                                rankAdapterCap1 = RankAdapter(listCap3, this@RankFragment)
-                                                                rankAdapterCap1?.notifyDataSetChanged()
+                                                                binding.rcvRankCap3.apply {
+                                                                    adapter = RankXAdapter(listCap3)
+                                                                    layoutManager =
+                                                                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                                                    hasFixedSize()
+                                                                }
+
+                                                                Log.d(TAG, "allList 3: ${listCap3.size}")
+
                                                             }
                                                             override fun onCancelled(error: DatabaseError) {
                                                             }
@@ -160,10 +183,6 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
 
                         })
                 }
-
-                //Lấy data list 2
-
-                //Lấy data list 2
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -172,111 +191,6 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
         })
     }
 
-
-    private fun setOnClickForViews() {
-        binding.tvCap1.setOnClickListener(this)
-        binding.tvCap2.setOnClickListener(this)
-        binding.tvCap3.setOnClickListener(this)
-    }
-
-    private fun initRecyclerView() {
-        rankAdapterCap1 = RankAdapter(listCap1, this)
-        rankAdapterCap2 = RankAdapter(listCap2, this)
-        rankAdapterCap3 = RankAdapter(listCap3, this)
-        binding.apply {
-            rcvRankCap1.apply {
-                adapter = rankAdapterCap1
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                hasFixedSize()
-            }
-            rcvRankCap2.apply {
-                adapter = rankAdapterCap2
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                hasFixedSize()
-            }
-            rcvRankCap3.apply {
-                adapter = rankAdapterCap3
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                hasFixedSize()
-            }
-        }
-    }
-
-    private fun initDataForRecyclerViewCap1() {
-        binding.rcvRankCap1.visibility = View.VISIBLE
-        binding.rcvRankCap2.visibility = View.GONE
-        binding.rcvRankCap3.visibility = View.GONE
-        phoneDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val data = arrayListOf<String>()
-                for (value in snapshot.children) {
-                    data.add(value.key.toString())
-                }
-
-                userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val userData = arrayListOf<User>()
-                        for (value in snapshot.children) {
-                            val currentUser = value.getValue(User::class.java)
-                            if (data.contains(currentUser?.phone)) {
-                                userData.add(currentUser!!)
-                            }
-                        }
-                        rankAdapterCap1?.setNewData(userData)
-                        Log.d(
-                            TAG, "onDataChange: Data cap 1 ${
-                                data.size
-                            }"
-                        )
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-
-                    }
-                })
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
-
-    }
-
-
-    companion object {
-        private const val TAG = "KienDA"
-    }
-
-    fun init() {
-        binding.setVariable(BR.viewModel, viewModel)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
-            View.VISIBLE
-        showCap1()
-    }
-
-    override fun onShortClick(position: Int, user: User) {
-        val bundle = bundleOf("userToUserDetailFragment" to user)
-        findNavController().navigate(R.id.rankDetailFragment, bundle)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.tvCap1 -> {
-                showCap1()
-            }
-            R.id.tvCap2 -> {
-                showCap2()
-            }
-            R.id.tvCap3 -> {
-                showCap3()
-            }
-        }
-    }
 
     private fun showCap1() {
         binding.tvCap1.background = resources.getDrawable(R.drawable.border_button_b)

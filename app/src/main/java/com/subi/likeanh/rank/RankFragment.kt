@@ -81,77 +81,157 @@ class RankFragment : Fragment(), OnItemUserClick, View.OnClickListener {
     private fun loadAllData(user: User) {
         listCap1.clear()
         //Get all list from phone number
-        val phone = user.phone
-        phoneDatabase.child(phone).addListenerForSingleValueEvent(object : ValueEventListener {
+        phoneDatabase.child(user.phone).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (phone in snapshot.children) {
-                    Log.d(TAG, "phone: ${phone.value}")
+                    Log.d(TAG, "phone: ${phone.key}")
                     //Get user from phone
-                    userDatabase.orderByChild("phone").equalTo(phone.value.toString())
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                snapshot.children.forEach{
-                                    val user = it.getValue(User::class.java)
-                                    //Get List
-                                        if (user != null) {
-                                            listCap1.add(user)
-                                            rankAdapterCap1?.setNewData(listCap1)
-                                            Log.d(TAG, "user list 1: $user")
-                                        }
+
+                    userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            Log.d(TAG, "onDataChange: ${user.phone}")
+                            val userData = arrayListOf<User>()
+                            for (value in snapshot.children) {
+                                val currentUser = value.getValue(User::class.java)
+                                if (user.phone == currentUser?.phone!!) {
+                                    Log.d(TAG, "onDataChange: ${currentUser.phone}")
+                                    userData.add(currentUser)
                                 }
                             }
-                            override fun onCancelled(error: DatabaseError) {
-                            }
+                            Log.d(TAG, "onDataChangeeee: ${userData.size}")
+                            rankAdapterCap1?.setNewData(userData)
+                        }
 
-                        })
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+
+//                    userDatabase.orderByChild("phone").equalTo(phone.value.toString())
+//                        .addListenerForSingleValueEvent(object : ValueEventListener {
+//                            override fun onDataChange(snapshot: DataSnapshot) {
+//                                snapshot.children.forEach {
+//                                    val user = it.getValue(User::class.java)
+//                                    //Get List
+//                                    if (user != null) {
+//                                        listCap1.add(user)
+//
+//                                        Log.d(TAG, "user list 1.1: $user")
+//                                    }
+//
+//                                    Log.d(TAG, "onDataChange 1.2: ${listCap1.size}")
+//
+//                                    //Lấy data list 2
+//                                    for (x in listCap1) {
+//                                        val phone = x.phone
+//                                        Log.d(TAG, "phone 2: $phone")
+//                                        //Get user from phone
+//
+//                                        phoneDatabase.child(x.phone)
+//                                            .addListenerForSingleValueEvent(object :
+//                                                ValueEventListener {
+//                                                override fun onDataChange(snapshot: DataSnapshot) {
+//                                                    val data = arrayListOf<String>()
+//                                                    for (value in snapshot.children) {
+//                                                        data.add(value.key.toString())
+//                                                    }
+//
+//                                                    userDatabase.addListenerForSingleValueEvent(
+//                                                        object : ValueEventListener {
+//                                                            override fun onDataChange(snapshot: DataSnapshot) {
+//                                                                val userData = arrayListOf<User>()
+//                                                                for (value in snapshot.children) {
+//                                                                    val currentUser =
+//                                                                        value.getValue(User::class.java)
+//                                                                    if (data.contains(currentUser?.phone)) {
+//                                                                        userData.add(currentUser!!)
+//                                                                    }
+//                                                                }
+//                                                                rankAdapterCap2?.setNewData(userData)
+//                                                                Log.d(
+//                                                                    TAG,
+//                                                                    "onDataChange: Data cap 1 ${
+//                                                                        data.size
+//                                                                    }"
+//                                                                )
+//                                                            }
+//
+//                                                            override fun onCancelled(error: DatabaseError) {
+//
+//                                                            }
+//                                                        })
+//                                                }
+//
+//                                                override fun onCancelled(error: DatabaseError) {
+//
+//                                                }
+//
+//                                            })
+//
+//                                        userDatabase.orderByChild("phone").equalTo(phone)
+//                                            .addListenerForSingleValueEvent(object :
+//                                                ValueEventListener {
+//                                                override fun onDataChange(snapshot: DataSnapshot) {
+//                                                    snapshot.children.forEach {
+//
+//
+//                                                        //Lấy data list 3
+//                                                        for (x in listCap2) {
+//                                                            val phone = x.phone
+//                                                            //Get user from phone
+//                                                            userDatabase.orderByChild("phone")
+//                                                                .equalTo(phone)
+//                                                                .addListenerForSingleValueEvent(
+//                                                                    object : ValueEventListener {
+//                                                                        override fun onDataChange(
+//                                                                            snapshot: DataSnapshot
+//                                                                        ) {
+//                                                                            snapshot.children.forEach {
+//                                                                                val user =
+//                                                                                    it.getValue(User::class.java)
+//                                                                                //Get List
+//                                                                                if (user != null) {
+//                                                                                    listCap3.add(
+//                                                                                        user
+//                                                                                    )
+//                                                                                    rankAdapterCap3?.setNewData(
+//                                                                                        listCap3
+//                                                                                    )
+//                                                                                    Log.d(
+//                                                                                        TAG,
+//                                                                                        "user list 3: $user"
+//                                                                                    )
+//                                                                                }
+//                                                                            }
+//                                                                        }
+//
+//                                                                        override fun onCancelled(
+//                                                                            error: DatabaseError
+//                                                                        ) {
+//                                                                        }
+//
+//                                                                    })
+//                                                        }
+//                                                    }
+//                                                }
+//
+//                                                override fun onCancelled(error: DatabaseError) {
+//                                                }
+//
+//                                            })
+//                                    }
+//                                }
+//                            }
+//
+//                            override fun onCancelled(error: DatabaseError) {
+//                            }
+//
+//                        })
                 }
                 Log.d(TAG, "allList 1: ${listCap1.size}")
 
-                //Lấy data list 2
-                for (x in listCap1){
-                    val phone = x.phone
-                    Log.d(TAG, "phone 2: $phone")
-                    //Get user from phone
-                        userDatabase.orderByChild("phone").equalTo(phone)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    snapshot.children.forEach{
-                                        val user = it.getValue(User::class.java)
-                                        //Get List
-                                        if (user != null) {
-                                            listCap2.add(user)
-                                            rankAdapterCap2?.setNewData(listCap2)
-                                            Log.d(TAG, "user list 2: $user")
-                                        }
-                                    }
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                }
 
-                            })
-                }
-                //Lấy data list 2
-                for (x in listCap2){
-                    val phone = x.phone
-                    //Get user from phone
-                    userDatabase.orderByChild("phone").equalTo(phone)
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                snapshot.children.forEach{
-                                    val user = it.getValue(User::class.java)
-                                    //Get List
-                                    if (user != null) {
-                                        listCap3.add(user)
-                                        rankAdapterCap3?.setNewData(listCap3)
-                                        Log.d(TAG, "user list 3: $user")
-                                    }
-                                }
-                            }
-                            override fun onCancelled(error: DatabaseError) {
-                            }
-
-                        })
-                }
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -69,7 +69,7 @@ class MoneyFragment : Fragment() {
     private fun setImageForImageView() {
         try {
             mStorageRef.downloadUrl.addOnSuccessListener {
-                Glide.with(requireActivity()).load(it).into(binding.imgCenter)
+                Glide.with(requireContext()).load(it).into(binding.imgCenter)
             }
         } catch (e: Exception) {
         }

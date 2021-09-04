@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/rankFragment"
-        android:name="com.subi.likeanh.rank.RankFragment"
+        android:name="com.subi.likeanh.rank.RankXFragment"
         android:label="RankFragment" >
         <action
             android:id="@+id/action_rankFragment_to_rankDetailFragment"

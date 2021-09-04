@@ -41,6 +41,10 @@
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.37604166666666666" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/fragment_rank.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_rank_detail.xml" value="0.17028985507246377" />
+        <entry key="app/src/main/res/layout/fragment_rankx.xml" value="0.17028985507246377" />
+        <entry key="app/src/main/res/layout/item_rank.xml" value="0.1358695652173913" />
+        <entry key="app/src/main/res/layout/item_rank_a.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/load_more.xml" value="0.11879432624113476" />
       </map>
     </option>

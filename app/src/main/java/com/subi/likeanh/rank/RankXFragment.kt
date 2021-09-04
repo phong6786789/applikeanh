@@ -115,7 +115,9 @@ class RankXFragment : Fragment() {
                                         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                                     hasFixedSize()
                                 }
+
                                 Log.d(TAG, "allList 1: ${listCap1.size}")
+
                                 for (x in listCap1){
                                     val phone = x.phone
                                     Log.d(TAG, "phone 2: $phone")

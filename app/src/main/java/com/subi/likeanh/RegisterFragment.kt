@@ -146,12 +146,9 @@ class RegisterFragment : Fragment() {
                                                                                     R.id.action_registerFragment_to_homeFragment
                                                                                 )
                                                                                 phoneDatabase.child(
-                                                                                    sdtx
-                                                                                ).child("test")
-                                                                                    .setValue("empty")
-                                                                                phoneDatabase.child(
-                                                                                    sdtx
-                                                                                ).setValue(sdtx)
+                                                                                    maGioiThieu
+                                                                                ).child(sdtx)
+                                                                                    .setValue(sdtx)
                                                                                 loading.dismiss()
                                                                             }
 

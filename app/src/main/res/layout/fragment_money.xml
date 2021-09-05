@@ -94,6 +94,16 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
+                            <TextView
+                                setMaGioiThieu="@{viewModel.user.sdtGt}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="8dp"
+                                android:textColor="#FFEB3B"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
                         </LinearLayout>
 
                         <ImageView

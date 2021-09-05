@@ -128,6 +128,19 @@ object BindingUtils {
         }
     }
 
+    @BindingAdapter("setMaGioiThieu")
+    @JvmStatic
+    fun setMaGioiThieu(textView: TextView, sdtGoiThieu: String?) {
+        try {
+            if (sdtGoiThieu!!.isNotEmpty()) {
+                textView.text = "Mã giới thiệu của bạn là $sdtGoiThieu"
+            }
+        } catch (e: Exception) {
+        }
+
+
+    }
+
 
     @BindingAdapter("setNameForGoiA")
     @JvmStatic

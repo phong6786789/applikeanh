@@ -180,50 +180,16 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
 
 
     private fun checkForUserPackage(user: User) {
-        when (val timeIntroduces = user.timesIntroduce.toInt()) {
-            INTRODUCE_TIME_FOR_GOI_1 -> {
-                Log.d(TAG, "checkForUserPackage: 1 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_1 + 1)..INTRODUCE_TIME_FOR_GOI_2 -> {
-                Log.d(TAG, "checkForUserPackage: 2 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_2 + 1)..INTRODUCE_TIME_FOR_GOI_3 -> {
-                Log.d(TAG, "checkForUserPackage: 3 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_3 + 1)..INTRODUCE_TIME_FOR_GOI_4 -> {
-                Log.d(TAG, "checkForUserPackage: 4 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_4 + 1)..INTRODUCE_TIME_FOR_GOI_5 -> {
-                Log.d(TAG, "checkForUserPackage: 5 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_5 + 1)..INTRODUCE_TIME_FOR_GOI_6 -> {
-                Log.d(TAG, "checkForUserPackage: 6 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            in (INTRODUCE_TIME_FOR_GOI_6 + 1)..INTRODUCE_TIME_FOR_GOI_7 -> {
-                Log.d(TAG, "checkForUserPackage: 7 $timeIntroduces")
-                updateTheUserPackage()
-                return
-            }
-            else -> {
-                dialog.show(
-                    "Bạn không đủ điền kiện để nạp vì số lượt giới thiệu của bạn không đủ",
-                    ""
-                )
-            }
+        val timeIntroduces = user.timesIntroduce.toInt()
+        if (timeIntroduces >= 3) {
+            updateTheUserPackage()
+            return
+        } else {
+            dialog.show(
+                "Bạn không đủ điền kiện để nạp vì số lượt giới thiệu của bạn không đủ",
+                ""
+            )
         }
-
     }
 
 

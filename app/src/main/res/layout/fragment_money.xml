@@ -79,7 +79,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
                                 android:paddingTop="8dp"
-                                android:textColor="#FFEB3B"
+                                android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
 
@@ -90,17 +90,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
                                 android:paddingTop="8dp"
-                                android:textColor="#FFEB3B"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                setMaGioiThieu="@{viewModel.user.sdtGt}"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="8dp"
-                                android:textColor="#FFEB3B"
+                                android:textColor="@color/white"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -117,6 +107,78 @@
 
 
                     </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvMagioiThieu"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="8dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="Mã giới thiệu là: " />
+
+                        <TextView
+                            android:id="@+id/tvMaGioiThieu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableEnd="@drawable/ic_page"
+                            android:gravity="center_vertical"
+                            android:text="@{viewModel.user.sdtGt}"
+                            android:textColor="@color/main" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvSdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="8dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="Số điện thoại của bạn là " />
+
+                        <TextView
+                            android:id="@+id/tvUserPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableEnd="@drawable/ic_page"
+                            android:gravity="center_vertical"
+                            android:text="@{viewModel.user.phone}"
+                            android:textColor="@color/main" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

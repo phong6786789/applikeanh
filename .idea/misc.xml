@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_edit_user.xml" value="0.20104166666666667" />
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_login.xml" value="0.20104166666666667" />
         <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_money.xml" value="0.35989583333333336" />
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_nap.xml" value="0.35989583333333336" />
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_reg.xml" value="0.35989583333333336" />
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/fragment_user.xml" value="0.35989583333333336" />
+        <entry key="..\:/AabFiles/applikeanh/app/src/main/res/layout/item_rank.xml" value="0.35989583333333336" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/boder.xml" value="0.37604166666666666" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/boder_home.xml" value="0.37604166666666666" />
         <entry key="..\:/Freelancer/applikeanh/app/src/main/res/drawable/button.xml" value="0.37604166666666666" />

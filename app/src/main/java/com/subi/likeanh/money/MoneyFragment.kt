@@ -1,11 +1,15 @@
 package com.subi.likeanh.money
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -60,11 +64,36 @@ class MoneyFragment : Fragment() {
             imgContact.setOnClickListener {
                 makeThePhoneCallToTheAdmin()
             }
+            cvSdt.setOnClickListener {
+                copyThePhoneNumber()
+            }
+            tvMaGioiThieu.setOnClickListener {
+                copyTheMaGioiThieu()
+            }
         }
         setImageForImageView()
 
         return binding.root;
     }
+
+    private fun copyTheMaGioiThieu() {
+        val clipBoard =
+            context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("MaGioiThieu", binding.tvMaGioiThieu.text.toString())
+        clipBoard.setPrimaryClip(clip)
+        Toast.makeText(context, "Bạn đã sao chép mã giới thiệu thành công", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun copyThePhoneNumber() {
+        val clipBoard =
+            context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("PhoneNumber", binding.tvUserPhone.text.toString())
+        clipBoard.setPrimaryClip(clip)
+        Toast.makeText(context, "Bạn đã sao chép số điện thoại thành công", Toast.LENGTH_SHORT)
+            .show()
+    }
+
     @UiThread
     private fun setImageForImageView() {
         try {

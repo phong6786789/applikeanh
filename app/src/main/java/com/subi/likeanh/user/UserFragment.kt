@@ -1,5 +1,6 @@
 package com.subi.likeanh.user
 
+import android.R.attr
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,6 +26,18 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.subi.likeanh.model.User
 import kotlin.math.log
+import android.R.attr.label
+
+import android.content.ClipData
+import androidx.core.content.ContextCompat
+
+import androidx.core.content.ContextCompat.getSystemService
+import android.R.attr.label
+import android.content.Context.CLIPBOARD_SERVICE
+import androidx.compose.ui.platform.ClipboardManager
+
+import androidx.core.content.ContextCompat.getSystemService
+import com.google.api.Context
 
 
 class UserFragment : Fragment(), View.OnClickListener {
@@ -48,6 +61,7 @@ class UserFragment : Fragment(), View.OnClickListener {
     private fun setOnClickForViews() {
         binding.tvMoveToScreenUpdatesUser.setOnClickListener(this)
         binding.tvLogOut.setOnClickListener(this)
+        binding.tvUserPhoneNumber.setOnClickListener(this)
     }
 
     private fun checkForSetDataToUserFragment() {
@@ -85,8 +99,13 @@ class UserFragment : Fragment(), View.OnClickListener {
             R.id.tvLogOut -> {
                 logOutOfTheUser()
             }
+            R.id.tvUserPhoneNumber -> {
+
+            }
         }
     }
+
+
 
     private fun logOutOfTheUser() {
         auth.signOut()

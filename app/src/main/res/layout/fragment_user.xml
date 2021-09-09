@@ -59,6 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:padding="10dp"
                         android:text="@{viewModel.user.name}"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
@@ -75,6 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:padding="10dp"
                         android:text="@{viewModel.user.bank}"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
@@ -91,6 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:padding="10dp"
                         android:text="@{viewModel.user.stk}"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
@@ -106,6 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:padding="10dp"
                         android:text="@{viewModel.user.phone}"
                         android:textColor="@color/black"
                         android:textStyle="bold" />

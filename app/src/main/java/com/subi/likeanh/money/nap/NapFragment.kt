@@ -178,7 +178,58 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
         }
     }
 
+
+    private fun checkForUserPackage(user: User) {
+        val timeIntroduces = user.timesIntroduce.toInt()
+        when (timeIntroduces) {
+            INTRODUCE_TIME_FOR_GOI_1 -> {
+                Log.d(TAG, "checkForUserPackage: 1 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_1 + 1)..INTRODUCE_TIME_FOR_GOI_2 -> {
+                Log.d(TAG, "checkForUserPackage: 2 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_2 + 1)..INTRODUCE_TIME_FOR_GOI_3 -> {
+                Log.d(TAG, "checkForUserPackage: 3 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_3 + 1)..INTRODUCE_TIME_FOR_GOI_4 -> {
+                Log.d(TAG, "checkForUserPackage: 4 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_4 + 1)..INTRODUCE_TIME_FOR_GOI_5 -> {
+                Log.d(TAG, "checkForUserPackage: 5 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_5 + 1)..INTRODUCE_TIME_FOR_GOI_6 -> {
+                Log.d(TAG, "checkForUserPackage: 6 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            in (INTRODUCE_TIME_FOR_GOI_6 + 1)..INTRODUCE_TIME_FOR_GOI_7 -> {
+                Log.d(TAG, "checkForUserPackage: 7 $timeIntroduces")
+                updateTheUserPackage()
+                return
+            }
+            else -> {
+                dialog.show(
+                    "Bạn không đủ điền kiện để nạp vì số lượt giới thiệu của bạn không đủ",
+                    ""
+                )
+            }
+        }
+
+    }
+
+
     private fun checkForStartScreen() {
+        Log.d(TAG, "checkForStartScreen: ")
         if (user != null) {
             val ref =
                 FirebaseDatabase.getInstance().getReference("user").child(user!!.uid)
@@ -194,14 +245,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
                         )
                         return
                     }
-                    if (user.timesIntroduce.toInt() >= 10) {
-                        updateTheUserPackage()
-                        return
-                    }
-                    dialog.show(
-                        "Bạn không đủ điền kiện để nạp vì lượt giới thiệu của bạn dưới 10",
-                        ""
-                    )
+                    checkForUserPackage(user)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -231,5 +275,16 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
 
     override fun onClick() {
 
+    }
+
+    companion object {
+        private const val TAG = "KienDA"
+        private const val INTRODUCE_TIME_FOR_GOI_1 = 10
+        private const val INTRODUCE_TIME_FOR_GOI_2 = 20
+        private const val INTRODUCE_TIME_FOR_GOI_3 = 30
+        private const val INTRODUCE_TIME_FOR_GOI_4 = 40
+        private const val INTRODUCE_TIME_FOR_GOI_5 = 50
+        private const val INTRODUCE_TIME_FOR_GOI_6 = 60
+        private const val INTRODUCE_TIME_FOR_GOI_7 = 70
     }
 }

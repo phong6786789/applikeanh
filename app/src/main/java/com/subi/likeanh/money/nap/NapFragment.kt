@@ -180,8 +180,7 @@ class NapFragment : Fragment(), View.OnClickListener, DialogRightInterface {
 
 
     private fun checkForUserPackage(user: User) {
-        val timeIntroduces = user.timesIntroduce.toInt()
-        when (timeIntroduces) {
+        when (val timeIntroduces = user.timesIntroduce.toInt()) {
             INTRODUCE_TIME_FOR_GOI_1 -> {
                 Log.d(TAG, "checkForUserPackage: 1 $timeIntroduces")
                 updateTheUserPackage()
